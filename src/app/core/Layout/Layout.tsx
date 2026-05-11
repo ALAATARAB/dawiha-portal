@@ -22,6 +22,7 @@ import {
     selectCurrentApiRole,
     selectCurrentPermission,
 } from '../../features/auth/state/authSlice'
+import logoImage from '/logo.png'
 
 const LayoutContainer = () => {
     const dispatch = useDispatch()
@@ -66,7 +67,7 @@ const LayoutContainer = () => {
             <DashboardLayout
                 renderPageItem={renderPageItem}
                 branding={{
-                    logo: <img src="/logo.png" alt="Dawiha Logo" style={{ height: '32px', width: '32px', display: 'block' }} />,
+                    logo: <img src={logoImage} alt="Dawiha Logo" style={{ height: '32px', width: '32px', display: 'block' }} />,
                     title: projectTitle,
                 }}
                 sidebarExpandedWidth={250}
