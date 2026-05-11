@@ -4,36 +4,42 @@
 The logo wasn't showing on GitHub Pages because the paths were using absolute URLs (`/logo.png`) which don't work with the base path `/dawiha-portal/`.
 
 ## Solution
-Changed logo references to use Vite's module import system with relative paths from the src directory.
+Use Vite's `import.meta.env.BASE_URL` to dynamically construct the correct path for assets in the `public` directory.
 
 ## Files Modified
 
 ### 1. `src/app/core/Layout/Layout.tsx`
-- Added: `import logoImage from '../../../../public/logo.png'`
-- Changed: `src="/logo.png"` → `src={logoImage}`
+- Changed: `src="/logo.png"`
+- To: `src={\`${import.meta.env.BASE_URL}logo.png\`}`
 
 ### 2. `src/app/pages/login/Login.tsx`
-- Added: `import logoImage from '../../../public/logo.png'`
-- Changed: `src="/logo.png"` → `src={logoImage}`
+- Changed: `src="/logo.png"`
+- To: `src={\`${import.meta.env.BASE_URL}logo.png\`}`
 
-### 3. `src/vite-env.d.ts`
-- Added TypeScript declarations for image module imports (*.png, *.jpg, *.svg, etc.)
+### 3. `vite.config.ts`
+- Added `BASE_URL` to the `define` section
+- Ensures `import.meta.env.BASE_URL` is available in the app
 
-### 4. `index.html`
-- Added script to dynamically fix favicon path for GitHub Pages
-- The favicon will now work with the `/dawiha-portal/` base path
+### 4. `src/vite-env.d.ts`
+- Added `BASE_URL` to the `ImportMetaEnv` interface for TypeScript support
+
+### 5. `index.html`
+- Favicon uses `/logo.png` which Vite automatically transforms with the base path
 
 ## How It Works
 
-When you import an asset from the public directory in Vite:
-```typescript
-import logoImage from '../../../public/logo.png'
-```
+### In Development:
+- `import.meta.env.BASE_URL` = `/`
+- Logo path: `/logo.png`
+
+### In Production (GitHub Pages):
+- `import.meta.env.BASE_URL` = `/dawiha-portal/`
+- Logo path: `/dawiha-portal/logo.png`
 
 Vite automatically:
-1. Processes the image during build
-2. Adds the correct base path (`/dawiha-portal/`)
-3. Returns the full URL: `/dawiha-portal/logo.png`
+1. Reads the `base` config from `vite.config.ts`
+2. Exposes it as `import.meta.env.BASE_URL`
+3. Transforms HTML asset paths during build
 
 ## Testing
 
@@ -58,7 +64,7 @@ After deployment, logo should show at: `https://alaatarab.github.io/dawiha-porta
 1. Commit these changes:
    ```bash
    git add .
-   git commit -m "Fix logo paths for GitHub Pages deployment"
+   git commit -m "Fix logo paths using BASE_URL for GitHub Pages"
    git push github main
    ```
 

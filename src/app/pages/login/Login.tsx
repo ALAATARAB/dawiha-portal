@@ -22,7 +22,6 @@ import { useDispatch } from 'react-redux'
 import { envConfig } from '../../common/env-config/env-config'
 import { useLoginMutation } from '../../features/auth/api/authApiSlice'
 import { setCredentials } from '../../features/auth/state/authSlice'
-import logoImage from '../../../public/logo.png'
 
 export default function LoginPage() {
     const notifications = useNotifications()
@@ -80,7 +79,7 @@ export default function LoginPage() {
                     }}
                 >
                     <img
-                        src={logoImage}
+                        src={`${import.meta.env.BASE_URL}logo.png`}
                         alt="Dawiha Logo"
                         style={{ height: '48px', width: '48px' }}
                     />
