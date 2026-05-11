@@ -22,7 +22,7 @@ import { useDispatch } from 'react-redux'
 import { envConfig } from '../../common/env-config/env-config'
 import { useLoginMutation } from '../../features/auth/api/authApiSlice'
 import { setCredentials } from '../../features/auth/state/authSlice'
-import logoImage from '/logo.png'
+import logoImage from '../../../public/logo.png'
 
 export default function LoginPage() {
     const notifications = useNotifications()

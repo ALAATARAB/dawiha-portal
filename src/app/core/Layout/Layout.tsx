@@ -22,7 +22,7 @@ import {
     selectCurrentApiRole,
     selectCurrentPermission,
 } from '../../features/auth/state/authSlice'
-import logoImage from '/logo.png'
+import logoImage from '../../../../public/logo.png'
 
 const LayoutContainer = () => {
     const dispatch = useDispatch()
