@@ -6,3 +6,4 @@ export const baseSearchDto = z.object({
 })
 
 export type BaseSearchDtoType = z.infer<typeof baseSearchDto>
+export type BaseSearchDto = BaseSearchDtoType

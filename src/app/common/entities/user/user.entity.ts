@@ -8,6 +8,12 @@ export type UserRoleEnum = z.infer<typeof userRoles>
 export const userGender = z.enum(['MALE', 'FEMALE'])
 export type UserGenderEnum = z.infer<typeof userGender>
 
+export const userAccountStatus = z.enum(['ACTIVE', 'INACTIVE', 'SUSPENDED'])
+export type UserAccountStatus = z.infer<typeof userAccountStatus>
+
+/** User entity for forms and display */
+export type UserEntity = AdminUserEntity
+
 /** Admin portal user row (`BaseActorEntity` from swagger). */
 export const baseActorEntity = z.object({
     id: z.number(),
@@ -30,6 +36,7 @@ export type BaseActorsEntity = z.infer<typeof baseActorsEntity>
 /** Admin portal user entity (mapped from BaseActorEntity). */
 export type AdminUserEntity = {
     id: number
+    name: string // Alias for fullName for compatibility
     fullName: string
     phoneNumber: string
     countryCode: string
@@ -48,9 +55,11 @@ export type AdminUsersEntity = {
 
 /** Maps API BaseActorEntity to AdminUserEntity. */
 export function mapActorToAdminUser(row: Record<string, unknown>): AdminUserEntity {
+    const fullName = String(row.full_name ?? '')
     return {
         id: Number(row.id),
-        fullName: String(row.full_name ?? ''),
+        name: fullName, // Alias for compatibility
+        fullName: fullName,
         phoneNumber: String(row.phone_number ?? ''),
         countryCode: String(row.country_code ?? ''),
         birthDate: row.birth_date ? String(row.birth_date) : undefined,

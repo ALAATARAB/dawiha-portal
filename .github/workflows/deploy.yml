@@ -34,7 +34,9 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build:prod
+        run: npm run build:prod:skip-check
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

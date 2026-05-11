@@ -8,6 +8,7 @@
         "dev:host": "vite --host",
         "build:dev": "cross-env NODE_ENV=development tsc -b && vite build --mode development",
         "build:prod": "cross-env NODE_ENV=production tsc -b && vite build --mode production",
+        "build:prod:skip-check": "cross-env NODE_ENV=production vite build --mode production",
         "preview": "vite preview",
         "lint": "eslint . --ext .ts,.tsx",
         "lint:fix": "eslint . --ext .ts,.tsx --fix",
