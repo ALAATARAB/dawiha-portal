@@ -1,0 +1,39 @@
+image: node:20
+
+# Cache node_modules for faster builds
+cache:
+  paths:
+    - dawiha-portal/node_modules/
+
+# Define stages
+stages:
+  - build
+  - deploy
+
+# Build job
+build:
+  stage: build
+  script:
+    - cd dawiha-portal
+    - npm ci
+    - npm run build:prod
+  artifacts:
+    paths:
+      - dawiha-portal/dist
+    expire_in: 1 hour
+  only:
+    - main
+    - master
+
+# Deploy to GitLab Pages
+pages:
+  stage: deploy
+  script:
+    - mkdir -p public
+    - cp -r dawiha-portal/dist/* public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
+    - master

@@ -1,0 +1,2 @@
+npm run check:partial
+npx lint-staged

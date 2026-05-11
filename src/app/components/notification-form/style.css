@@ -1,0 +1,185 @@
+.notification-form {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: #1f2937;
+}
+
+.form-section {
+  margin-bottom: 20px;
+  border: 1px solid #d5dbe5;
+  border-radius: 12px;
+  padding: 16px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.form-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.form-section h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.2px;
+}
+
+.section-badge {
+  font-size: 12px;
+  color: #334155;
+  background: #e8ecf2;
+  border: 1px solid #cfd6e2;
+  border-radius: 999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #334155;
+  font-size: 14px;
+}
+
+.form-group input[type="checkbox"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.inline-checkbox {
+  background: transparent;
+  border: 1px solid #d1d8e3;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.checkbox-label {
+  display: flex !important;
+  align-items: center;
+  margin-bottom: 0 !important;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #c5cedb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.users-multi-select {
+  min-height: 160px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #7c8aa0;
+  box-shadow: 0 0 0 3px rgba(124, 138, 160, 0.18);
+}
+
+.field-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.roles-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #d3dae6;
+  border-radius: 4px;
+}
+
+.role-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 6px 8px;
+  border: 1px solid #ced6e2;
+  border-radius: 8px;
+  background: transparent;
+  margin-bottom: 0 !important;
+}
+
+.role-checkbox:hover {
+  border-color: #a9b6c9;
+  background: #e9eef5;
+}
+
+.role-checkbox input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 11px 18px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: #334155;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(51, 65, 85, 0.25);
+}
+
+.btn-primary:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.helper-text {
+  color: #64748b;
+  font-size: 12px;
+  margin-top: 6px;
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .form-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

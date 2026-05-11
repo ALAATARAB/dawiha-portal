@@ -1,0 +1,54 @@
+
+/* Simple Number Search Styles */
+.simple-number-search .MuiInputLabel-root {
+    /* background-color: white; */
+    padding: 0 4px;
+    transform: translate(11px, -15px) scale(0.75);
+    transform-origin: top left;
+    z-index: 50;
+}
+
+.simple-number-search .MuiInputLabel-shrink {
+    transform: translate(14px, -9px) scale(0.75);
+}
+
+.simple-number-search .MuiOutlinedInput-root {
+    position: relative;
+}
+
+.simple-number-search .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Remove all hover and focus color changes */
+.simple-number-search .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+.simple-number-search .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(0, 0, 0, 0.12);
+    border-width: 1px;
+}
+
+/* Fix number input arrows positioning */
+.simple-number-search input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.simple-number-search input[type="number"]::-webkit-outer-spin-button,
+.simple-number-search input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: inner-spin-button;
+    appearance: inner-spin-button;
+    opacity: 1;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+}
+
+.simple-number-search .MuiInputBase-input {
+    padding-right: 32px !important;
+}

@@ -1,0 +1,41 @@
+# Required: (SSH_PRIVATE_KEY, HOST)
+.setup_ssh_client_script: &setup_ssh_client_script
+  - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keyscan $HOST >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+
+# Required: (BUILD_COMMAND, PROJECT_DIST_DIR)
+.build_script: &build_script
+  - command -v pnpm || npm install -g pnpm
+  - pnpm install
+  - NODE_OPTIONS=--max_old_space_size=4096 pnpm run $BUILD_COMMAND
+  - mkdir build
+  - scp -r $PROJECT_DIST_DIR ./build/
+
+# Required: (USER, HOST, PROJECT_DIR)
+.deploy_script: &deploy_script
+  - scp -r ./build/* $USER@$HOST:$PROJECT_DIR
+
+.build:
+  image: node:lts
+  stage: build
+  artifacts:
+    paths:
+      - build
+  script:
+    - *build_script
+
+.deploy:
+  image: node:lts
+  stage: deploy
+  artifacts:
+    paths:
+      - build
+  before_script:
+    - *setup_ssh_client_script
+  script:
+    - *deploy_script

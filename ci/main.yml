@@ -1,0 +1,14 @@
+.main: &main
+  only:
+    - main
+  variables:
+    PROJECT_DIR: /var/www/dev-portal.vemi.app/
+    BUILD_COMMAND: build:dev
+
+build:main:
+  <<: *main
+  extends: .build
+
+deploy:main:
+  <<: *main
+  extends: .deploy

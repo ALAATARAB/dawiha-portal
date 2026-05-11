@@ -1,0 +1,10 @@
+{
+    "PROJECT_NAME": "بوابة إدارة داويها",
+    "SUCCESSFUL_UPLOAD_MESSAGE": "تم رفع الملف بنجاح",
+    "SUCCESSFUL_LOGIN_MESSAGE": "تم تسجيل الدخول بنجاح",
+    "SUCCESSFUL_CREATE_MESSAGE": "تم الإنشاء بنجاح",
+    "SUCCESSFUL_UPDATE_MESSAGE": "تم تحديث البيانات بنجاح",
+    "SUCCESSFUL_DELETE_MESSAGE": "تم الحذف بنجاح",
+    "HOME": "الرئيسية",
+    "TEST": "اختبار"
+}

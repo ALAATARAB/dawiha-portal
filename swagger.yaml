@@ -1,0 +1,7514 @@
+openapi: 3.0.0
+paths:
+  /api:
+    get:
+      operationId: AppController_getHello
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - App
+  /health-check:
+    get:
+      operationId: HealthCheckController_checkHealth
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Health Check
+  /api/v1/users/me:
+    get:
+      operationId: UserController_getMe_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - User
+  /api/v1/users/profile:
+    patch:
+      operationId: UserController_updateProfile_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - User
+  /api/v1/users/password:
+    patch:
+      operationId: UserController_resetPassword_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - User
+  /api/v1/users/logout:
+    post:
+      operationId: UserController_logout_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - User
+  /api/v1/admin/users:
+    get:
+      operationId: AdminUserController_getUsers_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: role
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - USER
+                - PROVIDER
+                - ADMIN
+        - name: gender
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - MALE
+              - FEMALE
+        - name: name
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: phone_number
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: country_code
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: created_at_from
+          required: false
+          in: query
+          schema:
+            default: '2000-05-08T19:39:01Z'
+            type: string
+        - name: created_at_to
+          required: false
+          in: query
+          schema:
+            default: '2000-05-08T19:39:01Z'
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseActorsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - User
+  /api/v1/admin/users/me:
+    get:
+      operationId: AdminUserController_getMe_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - User
+  /api/v1/admin/users/{user_id}:
+    patch:
+      operationId: AdminUserController_updateUser_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: user_id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateUserDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - User
+  /api/v1/admin/users/logout:
+    post:
+      operationId: AdminUserController_logout_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - User
+  /api/v1/medias/upload-media:
+    post:
+      operationId: MediaController_uploadMedia_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                purpose:
+                  type: string
+                  enum:
+                    - USER
+                    - MEDICINE
+                  description: Purpose of the uploaded media
+              required:
+                - file
+                - purpose
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Media
+        - Media
+  /api/v1/admin/medias:
+    get:
+      operationId: AdminMediaController_getMedias_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: title
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: from_size
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: to_size
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: created_at_from
+          required: false
+          in: query
+          schema:
+            default: '2000-05-08T19:39:00Z'
+            type: string
+        - name: created_at_to
+          required: false
+          in: query
+          schema:
+            default: '2000-05-08T19:39:00Z'
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediasEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Media
+        - Media
+  /api/v1/admin/medias/upload-media:
+    post:
+      operationId: AdminMediaController_uploadMedia_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                purpose:
+                  type: string
+                  enum:
+                    - USER
+                    - MEDICINE
+                  description: Purpose of the uploaded media
+              required:
+                - file
+                - purpose
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Media
+        - Media
+  /api/v1/appointments:
+    post:
+      operationId: UserAppointmentController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAppointmentDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+  /api/v1/appointments/me:
+    get:
+      operationId: UserAppointmentController_findMyAppointments_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: provider_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - WAITING_PROVIDER_APPROVAL
+              - WAITING_CLIENT_APPROVAL
+              - RESERVED
+              - COMPLETED
+              - CANCELLED_BY_PROVIDER
+              - CANCELLED_BY_CLIENT
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+  /api/v1/appointments/{id}:
+    get:
+      operationId: UserAppointmentController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+    patch:
+      operationId: UserAppointmentController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAppointmentDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+  /api/v1/provider/appointments:
+    get:
+      operationId: ProviderAppointmentController_findMyAppointments_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: provider_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - WAITING_PROVIDER_APPROVAL
+              - WAITING_CLIENT_APPROVAL
+              - RESERVED
+              - COMPLETED
+              - CANCELLED_BY_PROVIDER
+              - CANCELLED_BY_CLIENT
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+  /api/v1/provider/appointments/{id}:
+    get:
+      operationId: ProviderAppointmentController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+    patch:
+      operationId: ProviderAppointmentController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAppointmentDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+  /api/v1/admin/appointments:
+    get:
+      operationId: AdminAppointmentController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: provider_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - WAITING_PROVIDER_APPROVAL
+              - WAITING_CLIENT_APPROVAL
+              - RESERVED
+              - COMPLETED
+              - CANCELLED_BY_PROVIDER
+              - CANCELLED_BY_CLIENT
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+  /api/v1/admin/appointments/{id}:
+    get:
+      operationId: AdminAppointmentController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+    patch:
+      operationId: AdminAppointmentController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAppointmentDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+    delete:
+      operationId: AdminAppointmentController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Appointment
+  /api/v1/auth/phone-verification:
+    post:
+      operationId: UserAuthenticationController_auth_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPhoneDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+              example: OTP sent successfully
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      tags:
+        - Authentication
+  /api/v1/auth/signup:
+    post:
+      operationId: UserAuthenticationController_signup_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseActorEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      tags:
+        - Authentication
+  /api/v1/auth/verify-otp:
+    post:
+      operationId: UserAuthenticationController_verifyOtp_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyOtpDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullAuthenticationEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      tags:
+        - Authentication
+  /api/v1/auth/forgot-password:
+    post:
+      operationId: UserAuthenticationController_forgotPassword_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPhoneDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      tags:
+        - Authentication
+  /api/v1/auth/reset-password:
+    post:
+      operationId: UserAuthenticationController_resetPassword_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      tags:
+        - Authentication
+  /api/v1/auth/login:
+    post:
+      operationId: UserAuthenticationController_login_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullAuthenticationEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      tags:
+        - Authentication
+  /api/v1/admin/auth/login:
+    post:
+      operationId: AdminAuthenticationController_login_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullAuthenticationEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      tags:
+        - Admin Authentication
+  /api/v1/categories:
+    get:
+      operationId: UserCategoryController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoriesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Category
+  /api/v1/categories/{id}:
+    get:
+      operationId: UserCategoryController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Category
+  /api/v1/admin/categories:
+    post:
+      operationId: AdminCategoryController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Category
+    get:
+      operationId: AdminCategoryController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoriesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Category
+  /api/v1/admin/categories/{id}:
+    get:
+      operationId: AdminCategoryController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Category
+    patch:
+      operationId: AdminCategoryController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Category
+    delete:
+      operationId: AdminCategoryController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Category
+  /api/v1/histories:
+    get:
+      operationId: UserHistoryController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - MEDICAL_RECORD
+              - PREGNANCY_HISTORY
+              - SURGERY_HISTORY
+              - ALLERGY_HISTORY
+              - MEDICATION_HISTORY
+              - FAMILY_HISTORY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoriesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+    post:
+      operationId: UserHistoryController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHistoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+  /api/v1/histories/{id}:
+    get:
+      operationId: UserHistoryController_findMyHistory_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+    patch:
+      operationId: UserHistoryController_updateMyHistory_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateHistoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+  /api/v1/admin/histories:
+    get:
+      operationId: AdminHistoryController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - MEDICAL_RECORD
+              - PREGNANCY_HISTORY
+              - SURGERY_HISTORY
+              - ALLERGY_HISTORY
+              - MEDICATION_HISTORY
+              - FAMILY_HISTORY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoriesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+  /api/v1/admin/histories/{id}:
+    get:
+      operationId: AdminHistoryController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+    patch:
+      operationId: AdminHistoryController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateHistoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+    delete:
+      operationId: AdminHistoryController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+  /api/v1/medicines:
+    post:
+      operationId: UserMedicineController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMedicineDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Medicine
+    get:
+      operationId: UserMedicineController_findMyMedicines_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: week_day
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - SUNDAY
+              - MONDAY
+              - TUESDAY
+              - WEDNESDAY
+              - THURSDAY
+              - FRIDAY
+              - SATURDAY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicinesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Medicine
+  /api/v1/medicines/{id}:
+    get:
+      operationId: UserMedicineController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Medicine
+    patch:
+      operationId: UserMedicineController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMedicineDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Medicine
+    delete:
+      operationId: UserMedicineController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Medicine
+  /api/v1/admin/medicines:
+    get:
+      operationId: AdminMedicineController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: week_day
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - SUNDAY
+              - MONDAY
+              - TUESDAY
+              - WEDNESDAY
+              - THURSDAY
+              - FRIDAY
+              - SATURDAY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicinesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Medicine
+  /api/v1/admin/medicines/{id}:
+    get:
+      operationId: AdminMedicineController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Medicine
+    patch:
+      operationId: AdminMedicineController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMedicineDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Medicine
+    delete:
+      operationId: AdminMedicineController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Medicine
+  /api/v1/medicine-guides:
+    get:
+      operationId: UserMedicineGuideController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineGuidesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - MedicineGuide
+  /api/v1/medicine-guides/{id}:
+    get:
+      operationId: UserMedicineGuideController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineGuideEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - MedicineGuide
+  /api/v1/admin/medicine-guides:
+    post:
+      operationId: AdminMedicineGuideController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMedicineGuideDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineGuideEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - MedicineGuide
+    get:
+      operationId: AdminMedicineGuideController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineGuidesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - MedicineGuide
+  /api/v1/admin/medicine-guides/{id}:
+    get:
+      operationId: AdminMedicineGuideController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineGuideEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - MedicineGuide
+    patch:
+      operationId: AdminMedicineGuideController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMedicineGuideDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicineGuideEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - MedicineGuide
+    delete:
+      operationId: AdminMedicineGuideController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - MedicineGuide
+  /api/v1/pregnancies:
+    get:
+      operationId: UserPregnancyController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - CANCELED
+              - DONE
+        - name: start_from
+          required: false
+          in: query
+          description: Filter by start date (from)
+          schema:
+            format: date-time
+            type: string
+        - name: start_to
+          required: false
+          in: query
+          description: Filter by start date (to)
+          schema:
+            format: date-time
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnanciesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Pregnancy
+    post:
+      operationId: UserPregnancyController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePregnancyDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Pregnancy
+  /api/v1/pregnancies/{id}:
+    get:
+      operationId: UserPregnancyController_findMyPregnancy_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Pregnancy
+    patch:
+      operationId: UserPregnancyController_updateMyPregnancy_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePregnancyDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Pregnancy
+  /api/v1/admin/pregnancies:
+    get:
+      operationId: AdminPregnancyController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - CANCELED
+              - DONE
+        - name: start_from
+          required: false
+          in: query
+          description: Filter by start date (from)
+          schema:
+            format: date-time
+            type: string
+        - name: start_to
+          required: false
+          in: query
+          description: Filter by start date (to)
+          schema:
+            format: date-time
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnanciesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Pregnancy
+  /api/v1/admin/pregnancies/{id}:
+    get:
+      operationId: AdminPregnancyController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Pregnancy
+    patch:
+      operationId: AdminPregnancyController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePregnancyDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Pregnancy
+    delete:
+      operationId: AdminPregnancyController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Pregnancy
+  /api/v1/pregnancy-stages:
+    get:
+      operationId: UserPregnancyStageController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: week_number
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyStagesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - PregnancyStage
+  /api/v1/pregnancy-stages/{id}:
+    get:
+      operationId: UserPregnancyStageController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyStageEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - PregnancyStage
+  /api/v1/admin/pregnancy-stages:
+    post:
+      operationId: AdminPregnancyStageController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePregnancyStageDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyStageEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - PregnancyStage
+    get:
+      operationId: AdminPregnancyStageController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: week_number
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyStagesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - PregnancyStage
+  /api/v1/admin/pregnancy-stages/{id}:
+    get:
+      operationId: AdminPregnancyStageController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyStageEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - PregnancyStage
+    patch:
+      operationId: AdminPregnancyStageController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePregnancyStageDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PregnancyStageEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - PregnancyStage
+    delete:
+      operationId: AdminPregnancyStageController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - PregnancyStage
+  /api/v1/providers:
+    get:
+      operationId: UserProviderController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - DOCTOR
+              - NURSE
+              - CLINIC
+              - HOSPITAL
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvidersEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Provider
+  /api/v1/providers/nearest:
+    get:
+      operationId: UserProviderController_findNearest_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: lat
+          required: true
+          in: query
+          description: Latitude of the search point
+          schema:
+            type: number
+        - name: lng
+          required: true
+          in: query
+          description: Longitude of the search point
+          schema:
+            type: number
+        - name: radius
+          required: false
+          in: query
+          description: 'Maximum search radius in meters (default: 50000 = 50km)'
+          schema:
+            default: 50000
+            type: number
+        - name: search
+          required: false
+          in: query
+          description: Search by title or description
+          schema:
+            type: string
+        - name: type
+          required: false
+          in: query
+          description: Filter by provider type
+          schema:
+            type: string
+            enum:
+              - DOCTOR
+              - NURSE
+              - CLINIC
+              - HOSPITAL
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NearestProvidersEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Provider
+  /api/v1/providers/{id}:
+    get:
+      operationId: UserProviderController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Provider
+  /api/v1/provider/profile:
+    post:
+      operationId: ProviderProviderController_createMyProfile_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProviderDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '409':
+          description: ''
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Provider
+  /api/v1/provider/profile/me:
+    get:
+      operationId: ProviderProviderController_getMyProfile_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Provider
+    patch:
+      operationId: ProviderProviderController_updateMyProfile_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProviderDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Provider
+  /api/v1/admin/providers:
+    get:
+      operationId: AdminProviderController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - DOCTOR
+              - NURSE
+              - CLINIC
+              - HOSPITAL
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvidersEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Provider
+  /api/v1/admin/providers/{id}:
+    get:
+      operationId: AdminProviderController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Provider
+    patch:
+      operationId: AdminProviderController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProviderDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Provider
+    delete:
+      operationId: AdminProviderController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Provider
+  /api/v1/provider-availabilities:
+    post:
+      operationId: UserProviderAvailabilityController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProviderAvailabilityDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderAvailabilityEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - ProviderAvailability
+    get:
+      operationId: UserProviderAvailabilityController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: provider_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: work_day
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - SUNDAY
+              - MONDAY
+              - TUESDAY
+              - WEDNESDAY
+              - THURSDAY
+              - FRIDAY
+              - SATURDAY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderAvailabilitiesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - ProviderAvailability
+  /api/v1/provider-availabilities/{id}:
+    get:
+      operationId: UserProviderAvailabilityController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderAvailabilityEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - ProviderAvailability
+    patch:
+      operationId: UserProviderAvailabilityController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProviderAvailabilityDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderAvailabilityEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - ProviderAvailability
+    delete:
+      operationId: UserProviderAvailabilityController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - ProviderAvailability
+  /api/v1/admin/provider-availabilities:
+    get:
+      operationId: AdminProviderAvailabilityController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: provider_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: work_day
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - SUNDAY
+              - MONDAY
+              - TUESDAY
+              - WEDNESDAY
+              - THURSDAY
+              - FRIDAY
+              - SATURDAY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderAvailabilitiesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - ProviderAvailability
+  /api/v1/admin/provider-availabilities/{id}:
+    get:
+      operationId: AdminProviderAvailabilityController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderAvailabilityEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - ProviderAvailability
+    patch:
+      operationId: AdminProviderAvailabilityController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProviderAvailabilityDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderAvailabilityEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - ProviderAvailability
+    delete:
+      operationId: AdminProviderAvailabilityController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - ProviderAvailability
+  /api/v1/requests:
+    get:
+      operationId: UserRequestController_findMyRequests_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: provider_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: category_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: title
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - PENDING
+              - DONE
+              - CANCELED
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+  /api/v1/requests/{id}:
+    get:
+      operationId: UserRequestController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+    patch:
+      operationId: UserRequestController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRequestForUserDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+  /api/v1/provider/requests:
+    post:
+      operationId: ProviderRequestController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProviderCreateRequestDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+    get:
+      operationId: ProviderRequestController_findMyRequests_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: provider_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: category_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: title
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - PENDING
+              - DONE
+              - CANCELED
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+  /api/v1/provider/requests/{id}:
+    get:
+      operationId: ProviderRequestController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+    patch:
+      operationId: ProviderRequestController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRequestDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+  /api/v1/admin/requests:
+    get:
+      operationId: AdminRequestController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: provider_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: category_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: title
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - PENDING
+              - DONE
+              - CANCELED
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+  /api/v1/admin/requests/{id}:
+    get:
+      operationId: AdminRequestController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+    patch:
+      operationId: AdminRequestController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRequestDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+    delete:
+      operationId: AdminRequestController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Request
+info:
+  title: 'Dawiha: dev environment'
+  description: ''
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    MeEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        full_name:
+          type: string
+        phone_number:
+          type: string
+        country_code:
+          type: string
+        birth_date:
+          format: date-time
+          type: string
+        gender:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+        fcm_token:
+          type: string
+        is_verified:
+          type: boolean
+        role:
+          type: string
+          enum:
+            - USER
+            - PROVIDER
+            - ADMIN
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - full_name
+        - phone_number
+        - country_code
+        - is_verified
+        - role
+        - created_at
+        - updated_at
+    HttpExceptionModel:
+      type: object
+      properties:
+        statusCode:
+          type: number
+        message:
+          type: string
+        fields:
+          type: array
+          items:
+            type: string
+      required:
+        - statusCode
+        - message
+        - fields
+    UpdateProfileDto:
+      type: object
+      properties:
+        full_name:
+          type: string
+        fcm_token:
+          type: string
+        birth_date:
+          type: string
+        gender:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+    ResetPasswordDto:
+      type: object
+      properties:
+        current_password:
+          type: string
+        new_password:
+          type: string
+      required:
+        - new_password
+    BaseActorEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        full_name:
+          type: string
+        phone_number:
+          type: string
+        country_code:
+          type: string
+        birth_date:
+          format: date-time
+          type: string
+        gender:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+        is_verified:
+          type: boolean
+        role:
+          type: string
+          enum:
+            - USER
+            - PROVIDER
+            - ADMIN
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - full_name
+        - phone_number
+        - country_code
+        - is_verified
+        - role
+        - created_at
+        - updated_at
+    MetaDataEntity:
+      type: object
+      properties:
+        current_page:
+          type: number
+        last_page:
+          type: number
+        per_page:
+          type: number
+        from:
+          type: number
+        to:
+          type: number
+        total:
+          type: number
+      required:
+        - current_page
+        - last_page
+        - per_page
+        - from
+        - to
+        - total
+    BaseActorsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BaseActorEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    AdminUpdateUserDto:
+      type: object
+      properties:
+        full_name:
+          type: string
+        fcm_token:
+          type: string
+        birth_date:
+          type: string
+        gender:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+        role:
+          type: string
+          enum:
+            - USER
+            - PROVIDER
+            - ADMIN
+          description: Application role for this actor
+        is_verified:
+          type: boolean
+          description: Whether the user has completed phone / account verification
+        phone_number:
+          type: string
+        country_code:
+          type: string
+    MediaEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        url:
+          type: string
+        type:
+          type: string
+        purpose:
+          type: string
+        width:
+          type: number
+          nullable: true
+        height:
+          type: number
+          nullable: true
+        size:
+          type: number
+          nullable: true
+        duration:
+          type: number
+          nullable: true
+      required:
+        - id
+        - title
+        - url
+        - type
+        - purpose
+    MediasEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    CreateAppointmentDto:
+      type: object
+      properties:
+        provider_id:
+          type: number
+        date:
+          type: string
+        status:
+          type: string
+          enum:
+            - WAITING_PROVIDER_APPROVAL
+            - WAITING_CLIENT_APPROVAL
+            - RESERVED
+            - COMPLETED
+            - CANCELLED_BY_PROVIDER
+            - CANCELLED_BY_CLIENT
+        user_notes:
+          type: string
+      required:
+        - provider_id
+        - date
+        - status
+    AppointmentEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        provider_id:
+          type: number
+        user_id:
+          type: number
+        date:
+          format: date-time
+          type: string
+        status:
+          type: string
+          enum:
+            - WAITING_PROVIDER_APPROVAL
+            - WAITING_CLIENT_APPROVAL
+            - RESERVED
+            - COMPLETED
+            - CANCELLED_BY_PROVIDER
+            - CANCELLED_BY_CLIENT
+        user_notes:
+          type: string
+        provider_notes:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - provider_id
+        - user_id
+        - date
+        - status
+        - created_at
+        - updated_at
+    AppointmentsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppointmentEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateAppointmentDto:
+      type: object
+      properties:
+        date:
+          type: string
+        status:
+          type: string
+          enum:
+            - WAITING_PROVIDER_APPROVAL
+            - WAITING_CLIENT_APPROVAL
+            - RESERVED
+            - COMPLETED
+            - CANCELLED_BY_PROVIDER
+            - CANCELLED_BY_CLIENT
+        user_notes:
+          type: string
+    UserPhoneDto:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          default: 573-513-9875
+        country_code:
+          type: string
+          default: '090'
+      required:
+        - phone_number
+        - country_code
+    SignupDto:
+      type: object
+      properties:
+        full_name:
+          type: string
+          default: Yalla Ahmed
+        birth_date:
+          type: string
+          default: '2000-05-08T19:39:01Z'
+        phone_number:
+          type: string
+          default: '988888888'
+        country_code:
+          type: string
+          default: '963'
+        gender:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+          default: MALE
+      required:
+        - full_name
+        - phone_number
+        - country_code
+        - gender
+    VerifyOtpDto:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          default: '988888888'
+        country_code:
+          type: string
+          default: '+963'
+        otp_code:
+          type: string
+          default: '827468'
+        purpose:
+          type: string
+          enum:
+            - RESET_PASSWORD
+            - VERIFY_USER
+        fcm_token:
+          type: string
+          description: FCM registration token for push notifications
+          example: eZ4nT0...:APA91bG...
+      required:
+        - phone_number
+        - country_code
+        - otp_code
+        - purpose
+    FullAuthenticationEntity:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/MeEntity'
+        accessToken:
+          type: string
+      required:
+        - user
+    ForgotPasswordDto:
+      type: object
+      properties:
+        phone_number:
+          type: string
+        country_code:
+          type: string
+        new_password:
+          type: string
+        otp_code:
+          type: string
+      required:
+        - phone_number
+        - country_code
+        - new_password
+        - otp_code
+    UserLoginDto:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          default: (209) 802-1044 x425
+        country_code:
+          type: string
+          default: '963'
+        password:
+          type: string
+          default: '963'
+        fcm_token:
+          type: string
+          description: FCM registration token for push notifications
+          example: eZ4nT0...:APA91bG...
+      required:
+        - phone_number
+        - country_code
+        - password
+    CategoryEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+        description:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - title
+        - created_at
+        - updated_at
+    CategoriesEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    CreateCategoryDto:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+      required:
+        - title
+    UpdateCategoryDto:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+    HistoryEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        user_id:
+          type: number
+        type:
+          type: string
+          enum:
+            - MEDICAL_RECORD
+            - PREGNANCY_HISTORY
+            - SURGERY_HISTORY
+            - ALLERGY_HISTORY
+            - MEDICATION_HISTORY
+            - FAMILY_HISTORY
+        title:
+          type: string
+        image_id:
+          type: number
+        description:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - user_id
+        - type
+        - title
+        - created_at
+        - updated_at
+    HistoriesEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HistoryEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    CreateHistoryDto:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - MEDICAL_RECORD
+            - PREGNANCY_HISTORY
+            - SURGERY_HISTORY
+            - ALLERGY_HISTORY
+            - MEDICATION_HISTORY
+            - FAMILY_HISTORY
+        title:
+          type: string
+        image_id:
+          type: number
+        description:
+          type: string
+      required:
+        - type
+        - title
+    UpdateHistoryDto:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - MEDICAL_RECORD
+            - PREGNANCY_HISTORY
+            - SURGERY_HISTORY
+            - ALLERGY_HISTORY
+            - MEDICATION_HISTORY
+            - FAMILY_HISTORY
+        title:
+          type: string
+        image_id:
+          type: number
+        description:
+          type: string
+    CreateMedicineDto:
+      type: object
+      properties:
+        title:
+          type: string
+        week_day:
+          type: string
+          enum:
+            - SUNDAY
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+        quantity:
+          type: number
+        instructions:
+          type: string
+        description:
+          type: string
+        dates:
+          type: array
+          items:
+            type: string
+      required:
+        - title
+        - week_day
+        - quantity
+        - dates
+    MedicineEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        user_id:
+          type: number
+        title:
+          type: string
+        week_day:
+          type: string
+          enum:
+            - SUNDAY
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+        quantity:
+          type: number
+        instructions:
+          type: string
+        description:
+          type: string
+        dates:
+          type: array
+          items:
+            type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - user_id
+        - title
+        - week_day
+        - quantity
+        - dates
+        - created_at
+        - updated_at
+    MedicinesEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicineEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateMedicineDto:
+      type: object
+      properties:
+        title:
+          type: string
+        week_day:
+          type: string
+          enum:
+            - SUNDAY
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+        quantity:
+          type: number
+        instructions:
+          type: string
+        description:
+          type: string
+        dates:
+          type: array
+          items:
+            type: string
+    MedicineGuideEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+        description:
+          type: string
+        uses:
+          type: string
+        warnings:
+          type: string
+        how_to_use:
+          type: string
+        main_info:
+          type: string
+        image_id:
+          type: number
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - title
+        - created_at
+        - updated_at
+    MedicineGuidesEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicineGuideEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    CreateMedicineGuideDto:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        uses:
+          type: string
+        warnings:
+          type: string
+        how_to_use:
+          type: string
+        main_info:
+          type: string
+        image_id:
+          type: number
+      required:
+        - title
+    UpdateMedicineGuideDto:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        uses:
+          type: string
+        warnings:
+          type: string
+        how_to_use:
+          type: string
+        main_info:
+          type: string
+        image_id:
+          type: number
+    PregnancyEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        user_id:
+          type: number
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - CANCELED
+            - DONE
+        start:
+          format: date-time
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - user_id
+        - status
+        - start
+        - created_at
+        - updated_at
+    PregnanciesEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PregnancyEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    CreatePregnancyDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - CANCELED
+            - DONE
+        start:
+          format: date-time
+          type: string
+      required:
+        - status
+        - start
+    UpdatePregnancyDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - CANCELED
+            - DONE
+        start:
+          format: date-time
+          type: string
+    PregnancyStageEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+        week_number:
+          type: number
+        description:
+          type: string
+        medical_advice:
+          type: object
+        image_id:
+          type: number
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - title
+        - week_number
+        - created_at
+        - updated_at
+    PregnancyStagesEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PregnancyStageEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    CreatePregnancyStageDto:
+      type: object
+      properties:
+        title:
+          type: string
+        week_number:
+          type: number
+        description:
+          type: string
+        medical_advice:
+          type: object
+        image_id:
+          type: number
+      required:
+        - title
+        - week_number
+    UpdatePregnancyStageDto:
+      type: object
+      properties:
+        title:
+          type: string
+        week_number:
+          type: number
+        description:
+          type: string
+        medical_advice:
+          type: object
+        image_id:
+          type: number
+    ProviderEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        user_id:
+          type: number
+        phone_numbers:
+          type: array
+          items:
+            type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        categories:
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum:
+            - DOCTOR
+            - NURSE
+            - CLINIC
+            - HOSPITAL
+        about:
+          type: string
+        booking_fees:
+          type: number
+        image_id:
+          type: number
+        description:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - user_id
+        - phone_numbers
+        - lat
+        - lng
+        - categories
+        - title
+        - type
+        - created_at
+        - updated_at
+    ProvidersEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProviderEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    NearestProviderEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        user_id:
+          type: number
+        phone_numbers:
+          type: array
+          items:
+            type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        categories:
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum:
+            - DOCTOR
+            - NURSE
+            - CLINIC
+            - HOSPITAL
+        about:
+          type: string
+        booking_fees:
+          type: number
+        image_id:
+          type: number
+        description:
+          type: string
+        distance:
+          type: number
+          description: Distance from search point in meters
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - user_id
+        - phone_numbers
+        - lat
+        - lng
+        - categories
+        - title
+        - type
+        - distance
+        - created_at
+        - updated_at
+    NearestProvidersEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NearestProviderEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    CreateProviderDto:
+      type: object
+      properties:
+        phone_numbers:
+          type: array
+          items:
+            type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        categories:
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum:
+            - DOCTOR
+            - NURSE
+            - CLINIC
+            - HOSPITAL
+        about:
+          type: string
+        booking_fees:
+          type: number
+        image_id:
+          type: number
+        description:
+          type: string
+      required:
+        - title
+        - type
+    UpdateProviderDto:
+      type: object
+      properties:
+        phone_numbers:
+          type: array
+          items:
+            type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        categories:
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum:
+            - DOCTOR
+            - NURSE
+            - CLINIC
+            - HOSPITAL
+        about:
+          type: string
+        booking_fees:
+          type: number
+        image_id:
+          type: number
+        description:
+          type: string
+    CreateProviderAvailabilityDto:
+      type: object
+      properties:
+        work_day:
+          type: string
+          enum:
+            - SUNDAY
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+        from:
+          type: string
+        to:
+          type: string
+      required:
+        - work_day
+        - from
+        - to
+    ProviderAvailabilityEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        provider_id:
+          type: number
+        work_day:
+          type: string
+          enum:
+            - SUNDAY
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+        from:
+          format: date-time
+          type: string
+        to:
+          format: date-time
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - provider_id
+        - work_day
+        - from
+        - to
+        - created_at
+        - updated_at
+    ProviderAvailabilitiesEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProviderAvailabilityEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateProviderAvailabilityDto:
+      type: object
+      properties:
+        work_day:
+          type: string
+          enum:
+            - SUNDAY
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+        from:
+          type: string
+        to:
+          type: string
+    RequestEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        provider_id:
+          type: number
+        user_id:
+          type: number
+        category_id:
+          type: number
+        title:
+          type: string
+        status:
+          type: string
+          enum:
+            - PENDING
+            - DONE
+            - CANCELED
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - provider_id
+        - user_id
+        - title
+        - status
+        - created_at
+        - updated_at
+    RequestsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    UpdateRequestForUserDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - PENDING
+            - DONE
+            - CANCELED
+      required:
+        - status
+    ProviderCreateRequestDto:
+      type: object
+      properties:
+        user_id:
+          type: number
+        category_id:
+          type: number
+        title:
+          type: string
+        status:
+          type: string
+          enum:
+            - PENDING
+            - DONE
+            - CANCELED
+      required:
+        - user_id
+        - title
+        - status
+    UpdateRequestDto:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: string
+          enum:
+            - PENDING
+            - DONE
+            - CANCELED
+        category_id:
+          type: number

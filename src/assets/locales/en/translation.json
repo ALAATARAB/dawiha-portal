@@ -1,0 +1,10 @@
+{
+    "PROJECT_NAME": "Dawiha admin portal",
+    "SUCCESSFUL_UPLOAD_MESSAGE": "File uploaded successful",
+    "SUCCESSFUL_LOGIN_MESSAGE": "Login successful",
+    "SUCCESSFUL_CREATE_MESSAGE": "Create successful",
+    "SUCCESSFUL_UPDATE_MESSAGE": "Update successful",
+    "SUCCESSFUL_DELETE_MESSAGE": "Delete successful",
+    "HOME": "home",
+    "TEST": "test"
+}

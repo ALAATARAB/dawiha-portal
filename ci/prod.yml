@@ -1,0 +1,14 @@
+.prod: &prod
+  only:
+    - prod
+  variables:
+    PROJECT_DIR: /var/www/portal.vemi.app/
+    BUILD_COMMAND: build:prod
+
+build:prod:
+  <<: *prod
+  extends: .build
+
+deploy:prod:
+  <<: *prod
+  extends: .deploy

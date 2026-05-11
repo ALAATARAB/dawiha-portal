@@ -1,0 +1,22 @@
+export const API_SLICES_TAGS = {
+    AUTH: 'auth',
+    USER: 'user',
+    SELECT_USER: 'userSelectWithApi',
+    CATEGORY: 'category',
+    SELECT_CATEGORY: 'categorySelectWithApi',
+    PROVIDER: 'provider',
+    SELECT_PROVIDER: 'providerSelectWithApi',
+    APPOINTMENT: 'appointment',
+    HISTORY: 'history',
+    MEDICINE: 'medicine',
+    MEDICINE_GUIDE: 'medicineGuide',
+    SELECT_MEDICINE_GUIDE: 'medicineGuideSelectWithApi',
+    PREGNANCY: 'pregnancy',
+    PREGNANCY_STAGE: 'pregnancyStage',
+    SELECT_PREGNANCY_STAGE: 'pregnancyStageSelectWithApi',
+    PROVIDER_AVAILABILITY: 'providerAvailability',
+    SELECT_PROVIDER_AVAILABILITY: 'providerAvailabilitySelectWithApi',
+    MEDIA: 'media',
+    DASHBOARD: 'dashboard', // Placeholder for future implementation
+}
+export const API_TAGS = Object.values(API_SLICES_TAGS)
