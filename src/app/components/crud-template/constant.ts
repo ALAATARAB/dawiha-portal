@@ -14,7 +14,12 @@ export interface ICrudTemplateProps<TData> {
     data: TData[]
     height?: number
     width?: string | number
-    pagination?: { page: number; pageSize: number }
+    pagination?: {
+        page: number
+        pageSize: number
+        onPageChange?: (page: number) => void
+        onPageSizeChange?: (pageSize: number) => void
+    }
     pageSizeOptions?: number[]
     enableSelect?: boolean
     border?: number

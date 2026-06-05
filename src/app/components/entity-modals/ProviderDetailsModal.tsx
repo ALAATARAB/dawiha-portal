@@ -1,6 +1,7 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress, Box, Typography, Chip, Grid2 } from '@mui/material'
-import { useGetProviderQuery } from '../../features/provider/api/providerApiSlice'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress, Box, Typography, Chip, Grid } from '@mui/material'
+
 import { type ProviderType } from '../../common/entities/provider/provider.entity'
+import { useGetProviderQuery } from '../../features/provider/api/providerApiSlice'
 
 interface ProviderDetailsModalProps {
     providerId: number | null

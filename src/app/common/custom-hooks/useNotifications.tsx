@@ -2,7 +2,7 @@ import type { CreateCustomNotificationDto } from '../dtos/notification/create-cu
 
 import { useState, useCallback } from 'react';
 
-import { notificationService } from '../services/notification.service';
+import { useCreateCustomNotificationMutation } from '../../features/notification/api/notificationApiSlice';
 
 interface UseNotificationsReturn {
   loading: boolean;
@@ -12,29 +12,26 @@ interface UseNotificationsReturn {
 }
 
 export const useNotifications = (): UseNotificationsReturn => {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const [createMutation, { isLoading }] = useCreateCustomNotificationMutation();
 
   const createNotification = useCallback(async (data: CreateCustomNotificationDto) => {
     try {
-      setLoading(true);
       setError(null);
-      await notificationService.createCustomNotification(data);
+      await createMutation(data).unwrap();
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to create notification');
       setError(error);
       throw error;
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  }, [createMutation]);
 
   const clearError = useCallback(() => {
     setError(null);
   }, []);
 
   return {
-    loading,
+    loading: isLoading,
     error,
     createNotification,
     clearError,

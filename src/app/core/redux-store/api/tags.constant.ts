@@ -18,5 +18,7 @@ export const API_SLICES_TAGS = {
     SELECT_PROVIDER_AVAILABILITY: 'providerAvailabilitySelectWithApi',
     MEDIA: 'media',
     DASHBOARD: 'dashboard', // Placeholder for future implementation
+    ADS: 'ads',
+    NOTIFICATION: 'notification',
 }
 export const API_TAGS = Object.values(API_SLICES_TAGS)

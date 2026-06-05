@@ -6,29 +6,19 @@ import {
   type NotificationType,
   type UserRole,
 } from '../../common/dtos/notification/create-custom-notification.dto';
-import { notificationService } from '../../common/services/notification.service';
+import { useCreateCustomNotificationMutation } from '../../features/notification/api/notificationApiSlice';
+import { useGetUsersQuery } from '../../features/user/api/userApiSlice';
 import './style.css';
 
 const NOTIFICATION_TYPES: NotificationType[] = [
-  'REVIEW',
-  'TASK',
-  'REQUEST',
-  'SUBSCRIPTION',
-  'PURCHASE_SERVICE',
-  'PURCHASE_PRODUCT',
-  'PURCHASE_PLAN',
   'CUSTOM',
+  'APPOINTMENT_CREATED',
+  'APPOINTMENT_UPDATED',
+  'REQUEST_CREATED',
+  'REQUEST_UPDATED',
 ];
 
-const USER_ROLES: UserRole[] = [
-  'SUPPORTED',
-  'SUPPORTER',
-  'PROVIDER',
-  'SUPPLIER',
-  'ADMIN',
-  'CASE_MANAGER',
-  'SUPER_ADMIN',
-];
+const USER_ROLES: UserRole[] = ['USER', 'PROVIDER', 'ADMIN'];
 
 interface NotificationFormProps {
   onSuccess?: () => void;
@@ -47,9 +37,6 @@ type UserOption = {
 };
 
 export default function NotificationForm({ onSuccess, onError }: NotificationFormProps) {
-  const [loading, setLoading] = useState(false);
-  const [loadingUsers, setLoadingUsers] = useState(false);
-  const [users, setUsers] = useState<UserOption[]>([]);
   const [userSearch, setUserSearch] = useState('');
   const [payloadText, setPayloadText] = useState('{}');
   const [payloadError, setPayloadError] = useState('');
@@ -57,6 +44,31 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<UserRole[]>([]);
   const [useGlobal, setUseGlobal] = useState(false);
+
+  // Use RTK Query for proper authentication
+  const [createNotification, { isLoading: loading }] = useCreateCustomNotificationMutation();
+
+  // Use RTK Query to fetch users with proper authentication
+  const { data: usersData, isLoading: loadingUsers, error: usersError } = useGetUsersQuery({
+    page: 1,
+    perPage: 100
+  });
+
+  const users = useMemo(() => {
+    if (!usersData?.data) return [];
+    return usersData.data.map((user) => ({
+      id: user.id,
+      name: user.name || `User #${user.id}`,
+    }));
+  }, [usersData]);
+
+  // Show error if users failed to load
+  useEffect(() => {
+    if (usersError) {
+      const err = new Error('Failed to load users');
+      onError?.(err);
+    }
+  }, [usersError, onError]);
 
   const { handleSubmit, register, watch, reset, formState: { errors } } = useForm<NotificationFormValues>({
     defaultValues: {
@@ -74,31 +86,8 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
     return users.filter((user) => user.name.toLowerCase().includes(term));
   }, [userSearch, users]);
 
-  useEffect(() => {
-    const loadUsers = async () => {
-      try {
-        setLoadingUsers(true);
-        const usersResponse = await notificationService.getUsers({ perPage: 100, page: 1 });
-        setUsers(
-          usersResponse.data.map((user) => ({
-            id: user.id,
-            name: user.name || `User #${user.id}`,
-          }))
-        );
-      } catch (error) {
-        const err = error instanceof Error ? error : new Error('Failed to load users');
-        onError?.(err);
-      } finally {
-        setLoadingUsers(false);
-      }
-    };
-
-    void loadUsers();
-  }, [onError]);
-
   const onSubmit = async (data: NotificationFormValues) => {
     try {
-      setLoading(true);
       setPayloadError('');
       setRecipientError('');
 
@@ -131,7 +120,8 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
         roles: selectedRoles.length > 0 ? selectedRoles : undefined,
       };
 
-      await notificationService.createCustomNotification(payload);
+      // Use RTK Query mutation which includes proper authentication
+      await createNotification(payload).unwrap();
       reset();
       setPayloadText('{}');
       setSelectedUsers([]);
@@ -146,8 +136,6 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
         setRecipientError(err.message);
       }
       onError?.(err);
-    } finally {
-      setLoading(false);
     }
   };
 

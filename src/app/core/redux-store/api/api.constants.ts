@@ -96,6 +96,19 @@ export const API_ENDPOINTS = {
         GET_COUNTS: '/admin/dashboard/counts', // Placeholder
         GET_DAILY_ACTIVITY: '/admin/dashboard/activity', // Placeholder
     },
+    ADS: {
+        GET_LIST: '/admin/ads',
+        GET_ONE: (id: number | string) => `/admin/ads/${id}`,
+        CREATE: '/admin/ads',
+        UPDATE: (id: number | string) => `/admin/ads/${id}`,
+        DELETE: (id: number | string) => `/admin/ads/${id}`,
+    },
+    NOTIFICATION: {
+        GET_LIST: '/admin/notifications',
+        CREATE_CUSTOM: '/admin/notifications/custom',
+        MARK_READ: (id: number | string) => `/admin/notifications/read/${id}`,
+        DELETE: (id: number | string) => `/admin/notifications/${id}`,
+    },
 }
 
 export const API_METHODS = {

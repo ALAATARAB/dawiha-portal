@@ -1,3 +1,4 @@
+import CampaignIcon from '@mui/icons-material/Campaign'
 import CategoryIcon from '@mui/icons-material/Category'
 import EventIcon from '@mui/icons-material/Event'
 import HistoryIcon from '@mui/icons-material/History'
@@ -62,6 +63,11 @@ export const adminSidebar: Navigation = [
         segment: 'provider-schedules',
         title: 'Provider Schedules',
         icon: <ScheduleIcon />,
+    },
+    {
+        segment: 'ads',
+        title: 'Ads',
+        icon: <CampaignIcon />,
     },
     {
         segment: 'notifications',

@@ -7,5 +7,6 @@ export interface ProviderCreateRequestDto {
     user_id: number
     category_id?: number
     title: string
+    notes?: string
     status: RequestStatus
 }

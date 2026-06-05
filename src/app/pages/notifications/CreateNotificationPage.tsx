@@ -4,8 +4,12 @@ import { useNotifications } from '@toolpad/core/useNotifications'
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-import { notificationService, type NotificationResponseItem } from '../../common/services/notification.service'
+import type { NotificationEntity } from '../../common/entities/notification/notification.entity'
 import { NotificationForm } from '../../components/notification-form'
+import {
+    useGetNotificationsQuery,
+    useMarkNotificationAsReadMutation
+} from '../../features/notification/api/notificationApiSlice'
 
 export default function CreateNotificationPage() {
     const navigate = useNavigate()
@@ -18,8 +22,15 @@ export default function CreateNotificationPage() {
     // const isView = !isCreate && !isEdit
     const parsedId = notificationId ? Number(notificationId) : NaN
 
-    const [existing, setExisting] = useState<NotificationResponseItem | null>(null)
-    const [loading, setLoading] = useState(false)
+    const [existing, setExisting] = useState<NotificationEntity | null>(null)
+
+    // Use RTK Query for proper authentication
+    const { data: notificationsData, isLoading, error: fetchError } = useGetNotificationsQuery(
+        { page: 1, perPage: 100 },
+        { skip: isCreate || !Number.isFinite(parsedId) || parsedId <= 0 }
+    )
+
+    const [markAsRead] = useMarkNotificationAsReadMutation()
 
     const payload = useMemo(() => {
         const value = existing?.payload
@@ -31,34 +42,28 @@ export default function CreateNotificationPage() {
 
     useEffect(() => {
         if (isCreate || !Number.isFinite(parsedId) || parsedId <= 0) return
-        const load = async () => {
-            try {
-                setLoading(true)
-                const response = await notificationService.getNotifications({
-                    page: 1,
-                    perPage: 100,
-                })
-                const row = response.data.find((item) => item.id === parsedId) ?? null
-                setExisting(row)
-            } catch (error: any) {
-                toast.show(
-                    error?.message ?? error?.data?.message ?? 'Failed to load notification.',
-                    {
-                        severity: 'error',
-                        autoHideDuration: 3000,
-                    }
-                )
-            } finally {
-                setLoading(false)
-            }
-        }
-        void load()
-    }, [isCreate, parsedId])
 
-    const markAsRead = async () => {
+        if (fetchError) {
+            toast.show(
+                'Failed to load notification.',
+                {
+                    severity: 'error',
+                    autoHideDuration: 3000,
+                }
+            )
+            return
+        }
+
+        if (notificationsData?.data) {
+            const row = notificationsData.data.find((item) => item.id === parsedId) ?? null
+            setExisting(row)
+        }
+    }, [isCreate, parsedId, notificationsData, fetchError, toast])
+
+    const handleMarkAsRead = async () => {
         if (!existing || existing.is_read) return
         try {
-            await notificationService.markAsRead(existing.id)
+            await markAsRead(existing.id).unwrap()
             setExisting((prev) => (prev ? { ...prev, is_read: true } : prev))
             toast.show('Notification marked as read.', {
                 severity: 'success',
@@ -79,7 +84,7 @@ export default function CreateNotificationPage() {
         return (
             <Paper sx={{ p: 3, maxWidth: 560, mx: 'auto' }}>
                 <Typography color="error" sx={{ mb: 2 }}>
-                    {loading ? 'Loading notification...' : 'Notification not found.'}
+                    {isLoading ? 'Loading notification...' : 'Notification not found.'}
                 </Typography>
                 <Button onClick={() => navigate('/notifications')}>Back to list</Button>
             </Paper>
@@ -163,7 +168,7 @@ export default function CreateNotificationPage() {
                                     Back
                                 </Button>
                                 {!existing?.is_read ? (
-                                    <Button variant="contained" onClick={() => void markAsRead()}>
+                                        <Button variant="contained" onClick={() => void handleMarkAsRead()}>
                                         Mark as read
                                     </Button>
                                 ) : null}

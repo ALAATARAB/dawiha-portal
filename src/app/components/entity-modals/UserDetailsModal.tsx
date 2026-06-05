@@ -1,4 +1,5 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress, Box, Typography, Chip, Grid } from '@mui/material'
+import { Box, Button, Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material'
+
 import { useGetOneUserQuery } from '../../features/user/api/userApiSlice'
 
 interface UserDetailsModalProps {

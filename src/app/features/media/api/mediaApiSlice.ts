@@ -3,6 +3,7 @@ import {
     API_ENDPOINTS,
     API_METHODS,
 } from '../../../core/redux-store/api/api.constants'
+import { API_SLICES_TAGS } from '../../../core/redux-store/api/tags.constant'
 
 /**
  * Swagger `MediaEntity` — 201 response from
@@ -29,6 +30,13 @@ export type UploadMediaArgs = {
 
 export const mediaApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
+        getMedia: builder.query<MediaEntity, number>({
+            query: (id) => ({
+                url: `/admin/medias/${id}`,
+                method: API_METHODS.GET,
+            }),
+            providesTags: [API_SLICES_TAGS.MEDIA],
+        }),
         uploadMedia: builder.mutation<MediaEntity, UploadMediaArgs>({
             query: ({ file, purpose }) => {
                 const body = new FormData()
@@ -40,8 +48,9 @@ export const mediaApiSlice = apiSlice.injectEndpoints({
                     body,
                 }
             },
+            invalidatesTags: [API_SLICES_TAGS.MEDIA],
         }),
     }),
 })
 
-export const { useUploadMediaMutation } = mediaApiSlice
+export const { useGetMediaQuery, useUploadMediaMutation } = mediaApiSlice

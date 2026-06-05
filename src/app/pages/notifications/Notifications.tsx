@@ -1,23 +1,20 @@
 import { useNotifications } from '@toolpad/core/useNotifications'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { NOTIFICATIONS_PAGE_TITLE, notificationColumns } from './constant'
-import { type NotificationListItem } from './types'
 import { type NotificationType } from '../../common/dtos/notification/create-custom-notification.dto'
-import { notificationService } from '../../common/services/notification.service'
 import CrudTemplate from '../../components/crud-template/CrudTemplate'
 import { SimpleSearch } from '../../components/simple-search/SimpleSearch'
+import { useGetNotificationsQuery } from '../../features/notification/api/notificationApiSlice'
+import { NOTIFICATIONS_PAGE_TITLE, notificationColumns } from './constant'
+import { type NotificationListItem } from './types'
 
 const FALLBACK_TITLE: Record<NotificationType, string> = {
-    REVIEW: 'Review notification',
-    TASK: 'Task notification',
-    REQUEST: 'Request notification',
-    SUBSCRIPTION: 'Subscription notification',
-    PURCHASE_SERVICE: 'Purchased service notification',
-    PURCHASE_PRODUCT: 'Purchased product notification',
-    PURCHASE_PLAN: 'Purchased plan notification',
     CUSTOM: 'Custom notification',
+    APPOINTMENT_CREATED: 'Appointment created notification',
+    APPOINTMENT_UPDATED: 'Appointment updated notification',
+    REQUEST_CREATED: 'Request created notification',
+    REQUEST_UPDATED: 'Request updated notification',
 }
 
 const toObject = (value: unknown): Record<string, unknown> =>
@@ -32,58 +29,59 @@ export default function Notifications() {
     const navigate = useNavigate()
     const toast = useNotifications()
     const [searchParams] = useSearchParams()
-    const [rows, setRows] = useState<NotificationListItem[]>([])
-    const [isLoading, setIsLoading] = useState(false)
 
-    const loadNotifications = async () => {
-        try {
-            setIsLoading(true)
-            const response = await notificationService.getNotifications({
-                page: 1,
-                perPage: 100,
-            })
-            const mappedRows: NotificationListItem[] = response.data.map((row) => {
-                const payload = toObject(row.payload)
-                const title = toText(payload.title) || FALLBACK_TITLE[row.type]
-                const message =
-                    toText(payload.body) ||
-                    (Object.keys(payload).length > 0
-                        ? JSON.stringify(payload)
-                        : '—')
-                const firstName = toText(row.receiver?.first_name)
-                const lastName = toText(row.receiver?.last_name)
-                const receiverName =
-                    `${firstName} ${lastName}`.trim() ||
-                    (row.receiver?.id ? `User #${row.receiver.id}` : 'Global')
+    // Query with proper defaults matching server expectations
+    const { data, isLoading, error } = useGetNotificationsQuery({
+        page: 1,
+        perPage: 100,
+    })
 
-                return {
-                    id: row.id,
-                    type: row.type,
-                    title,
-                    message,
-                    receiverName,
-                    isRead: row.is_read,
-                    isSeen: row.is_seen,
-                    createdAt: row.created_at,
-                }
-            })
-            setRows(mappedRows)
-        } catch (error: any) {
-            toast.show(
-                error?.message ?? error?.data?.message ?? 'Failed to load notifications.',
-                {
-                    severity: 'error',
-                    autoHideDuration: 3000,
-                }
-            )
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
+    // Show error toast if there's an error (must be in useEffect to avoid render issues)
     useEffect(() => {
-        void loadNotifications()
-    }, [])
+        if (error) {
+            console.error('Notifications error:', error)
+            const errorMessage =
+                (error as any)?.data?.message ||
+                (error as any)?.error ||
+                (error as any)?.message ||
+                'Failed to load notifications.'
+
+            toast.show(errorMessage, {
+                severity: 'error',
+                autoHideDuration: 3000,
+            })
+        }
+    }, [error, toast])
+
+    const rows = useMemo(() => {
+        if (!data?.data) return []
+
+        return data.data.map((row): NotificationListItem => {
+            const payload = toObject(row.payload)
+            const title = toText(payload.title) || FALLBACK_TITLE[row.type]
+            const message =
+                toText(payload.body) ||
+                (Object.keys(payload).length > 0
+                    ? JSON.stringify(payload)
+                    : '—')
+            const firstName = toText(row.receiver?.first_name)
+            const lastName = toText(row.receiver?.last_name)
+            const receiverName =
+                `${firstName} ${lastName}`.trim() ||
+                (row.receiver?.id ? `User #${row.receiver.id}` : 'Global')
+
+            return {
+                id: row.id,
+                type: row.type,
+                title,
+                message,
+                receiverName,
+                isRead: row.is_read,
+                isSeen: row.is_seen,
+                createdAt: row.created_at,
+            }
+        })
+    }, [data])
 
     const filteredRows = useMemo(() => {
         const keyword = searchParams.get('title')?.trim().toLowerCase() ?? ''
@@ -102,11 +100,9 @@ export default function Notifications() {
             totalCount={filteredRows.length}
             isLoading={isLoading}
             enableCreate
-            enableEdit
             enableView
             pageSizeOptions={[10, 25, 50, 100]}
             onCreateNavigate={() => navigate('/notifications/create')}
-            onEditNavigate={(row) => navigate(`/notifications/${row.id}/edit`)}
             onViewNavigate={(row) => navigate(`/notifications/${row.id}`)}
             extraFilters={<SimpleSearch searchParamKeyName="title" />}
             title={NOTIFICATIONS_PAGE_TITLE}

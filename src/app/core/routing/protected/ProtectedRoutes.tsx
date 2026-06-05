@@ -3,6 +3,7 @@ import { type RouteObject } from 'react-router-dom'
 // New Dawiha Pages
 
 // Import new feature pages
+import AdsListPage from '../../../features/advertisements/pages/AdsListPage'
 import AppointmentListPage from '../../../features/appointment/pages/AppointmentListPage'
 import HistoryListPage from '../../../features/history/pages/HistoryListPage'
 import MedicineListPage from '../../../features/medicine/pages/MedicineListPage'
@@ -18,6 +19,7 @@ import ViewUserDetails from '../../../pages/users/sub-pages/ViewUserDetails'
 import Users from '../../../pages/users/Users'
 
 // Import API slices to ensure they're registered
+import '../../../features/advertisements/api/adsApiSlice'
 import '../../../features/appointment/api/appointmentApiSlice'
 import '../../../features/provider/api/providerApiSlice'
 import '../../../features/history/api/historyApiSlice'
@@ -59,6 +61,9 @@ export const adminRoutes: RouteObject[] = [
 
     // Provider Availabilities Management
     { path: '/provider-schedules', element: <ProviderAvailabilityListPage /> },
+
+    // Ads Management
+    { path: '/ads', element: <AdsListPage /> },
 
     // Notifications
     { path: '/notifications', element: <Notifications /> },

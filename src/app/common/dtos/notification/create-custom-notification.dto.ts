@@ -1,13 +1,13 @@
-export type NotificationType = 'REVIEW' | 'TASK' | 'REQUEST' | 'SUBSCRIPTION' | 'PURCHASE_SERVICE' | 'PURCHASE_PRODUCT' | 'PURCHASE_PLAN' | 'CUSTOM';
+import type { NotificationType } from '../../entities/notification/notification.entity'
 
-export type UserRole = 'SUPPORTED' | 'SUPPORTER' | 'PROVIDER' | 'SUPPLIER' | 'ADMIN' | 'CASE_MANAGER' | 'SUPER_ADMIN';
+export type UserRole = 'USER' | 'PROVIDER' | 'ADMIN'
 
 export interface CreateCustomNotificationDto {
-  user_ids?: number[];
-  roles?: UserRole[];
-  type: NotificationType;
-  payload?: Record<string, unknown>;
-  global?: boolean;
-  title?: string;
-  body?: string;
+  user_ids?: number[]
+  roles?: UserRole[]
+  type: NotificationType
+  payload?: Record<string, unknown>
+  global?: boolean
+  title?: string
+  body?: string
 }

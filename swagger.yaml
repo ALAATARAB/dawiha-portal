@@ -296,13 +296,13 @@ paths:
           required: false
           in: query
           schema:
-            default: '2000-05-08T19:39:01Z'
+            default: '2000-06-02T20:44:30Z'
             type: string
         - name: created_at_to
           required: false
           in: query
           schema:
-            default: '2000-05-08T19:39:01Z'
+            default: '2000-06-02T20:44:30Z'
             type: string
       responses:
         '200':
@@ -609,13 +609,13 @@ paths:
           required: false
           in: query
           schema:
-            default: '2000-05-08T19:39:00Z'
+            default: '2000-06-02T20:44:30Z'
             type: string
         - name: created_at_to
           required: false
           in: query
           schema:
-            default: '2000-05-08T19:39:00Z'
+            default: '2000-06-02T20:44:30Z'
             type: string
       responses:
         '200':
@@ -728,6 +728,388 @@ paths:
       tags:
         - Media
         - Media
+  /api/v1/ads:
+    get:
+      operationId: UserAdsController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: provider_id
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdsListEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Ads
+  /api/v1/ads/{id}:
+    get:
+      operationId: UserAdsController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Ads
+  /api/v1/admin/ads:
+    post:
+      operationId: AdminAdsController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdsDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdsEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Ads
+    get:
+      operationId: AdminAdsController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: provider_id
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdsListEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Ads
+  /api/v1/admin/ads/{id}:
+    get:
+      operationId: AdminAdsController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Ads
+    patch:
+      operationId: AdminAdsController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdsDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdsEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Ads
+    delete:
+      operationId: AdminAdsController_delete_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Ads
   /api/v1/appointments:
     post:
       operationId: UserAppointmentController_create_v1
@@ -813,6 +1195,11 @@ paths:
           in: query
           schema:
             type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
         - name: status
           required: false
           in: query
@@ -1009,6 +1396,11 @@ paths:
           in: query
           schema:
             type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
         - name: status
           required: false
           in: query
@@ -1205,6 +1597,11 @@ paths:
           in: query
           schema:
             type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
         - name: status
           required: false
           in: query
@@ -1404,6 +1801,349 @@ paths:
         - bearer: []
       tags:
         - Appointment
+  /api/v1/admin/notifications:
+    get:
+      operationId: AdminNotificationController_getNotifications_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - CUSTOM
+              - APPOINTMENT_CREATED
+              - APPOINTMENT_UPDATED
+              - REQUEST_CREATED
+              - REQUEST_UPDATED
+        - name: receiver_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: is_seen
+          required: false
+          in: query
+          schema:
+            type: boolean
+        - name: is_read
+          required: false
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Notifications
+        - Notifications
+  /api/v1/admin/notifications/custom:
+    post:
+      operationId: AdminNotificationController_createCustomNotification_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomNotificationDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Notifications
+        - Notifications
+  /api/v1/admin/notifications/read/{id}:
+    patch:
+      operationId: AdminNotificationController_markRead_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Notifications
+        - Notifications
+  /api/v1/user/notifications:
+    get:
+      operationId: UserNotificationController_getNotifications_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - CUSTOM
+              - APPOINTMENT_CREATED
+              - APPOINTMENT_UPDATED
+              - REQUEST_CREATED
+              - REQUEST_UPDATED
+        - name: receiver_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: is_seen
+          required: false
+          in: query
+          schema:
+            type: boolean
+        - name: is_read
+          required: false
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationsEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Notifications
+  /api/v1/user/notifications/unseen-count:
+    get:
+      operationId: UserNotificationController_getCountUnseenNotifications_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Notifications
+  /api/v1/user/notifications/read/{id}:
+    patch:
+      operationId: UserNotificationController_markRead_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - Notifications
   /api/v1/auth/phone-verification:
     post:
       operationId: UserAuthenticationController_auth_v1
@@ -1503,6 +2243,69 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HttpExceptionModel'
+        '419':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      tags:
+        - Authentication
+  /api/v1/auth/provider/signup:
+    post:
+      operationId: UserAuthenticationController_providerSignup_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProviderSignupDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseActorEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '409':
+          description: ''
         '419':
           description: ''
           content:
@@ -2438,6 +3241,270 @@ paths:
         - bearer: []
       tags:
         - History
+  /api/v1/provider/histories:
+    get:
+      operationId: ProviderHistoryController_findAll_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: perPage
+          required: false
+          in: query
+          schema:
+            default: 100
+            type: number
+        - name: page
+          required: false
+          in: query
+          schema:
+            default: 1
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: user_id
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - MEDICAL_RECORD
+              - PREGNANCY_HISTORY
+              - SURGERY_HISTORY
+              - ALLERGY_HISTORY
+              - MEDICATION_HISTORY
+              - FAMILY_HISTORY
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoriesEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+    post:
+      operationId: ProviderHistoryController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHistoryForUserDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+  /api/v1/provider/histories/{id}:
+    get:
+      operationId: ProviderHistoryController_findOne_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+    patch:
+      operationId: ProviderHistoryController_update_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateHistoryDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
   /api/v1/admin/histories:
     get:
       operationId: AdminHistoryController_findAll_v1
@@ -2491,6 +3558,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HistoriesEntity'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
+        '502':
+          description: Bad Gateway
+          content:
+            text/html: {}
+      security:
+        - bearer: []
+      tags:
+        - History
+    post:
+      operationId: AdminHistoryController_create_v1
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - en-US
+              - ar-SY
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHistoryForUserDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryEntity'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpExceptionModel'
         '401':
           description: Unauthorized
           content:
@@ -6234,7 +7351,7 @@ paths:
       tags:
         - Request
 info:
-  title: 'Dawiha: dev environment'
+  title: 'Dawiha: development environment'
   description: ''
   version: '1.0'
   contact: {}
@@ -6440,33 +7557,26 @@ components:
           type: number
         title:
           type: string
-        description:
-          type: string
           nullable: true
         url:
           type: string
-        type:
-          type: string
         purpose:
           type: string
-        width:
-          type: number
-          nullable: true
-        height:
-          type: number
-          nullable: true
         size:
           type: number
           nullable: true
-        duration:
-          type: number
-          nullable: true
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
       required:
         - id
-        - title
         - url
-        - type
         - purpose
+        - created_at
+        - updated_at
     MediasEntity:
       type: object
       properties:
@@ -6479,6 +7589,85 @@ components:
       required:
         - data
         - meta
+    AdsEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        image_id:
+          type: number
+        provider_id:
+          type: number
+        priority:
+          type: number
+        url:
+          type: string
+        from:
+          format: date-time
+          type: string
+        to:
+          format: date-time
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        image:
+          $ref: '#/components/schemas/MediaEntity'
+      required:
+        - id
+        - created_at
+        - updated_at
+    AdsListEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdsEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    CreateAdsDto:
+      type: object
+      properties:
+        image_id:
+          type: number
+        provider_id:
+          type: number
+        priority:
+          type: number
+        url:
+          type: string
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
+      required:
+        - priority
+    UpdateAdsDto:
+      type: object
+      properties:
+        image_id:
+          type: number
+        provider_id:
+          type: number
+        priority:
+          type: number
+        url:
+          type: string
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
     CreateAppointmentDto:
       type: object
       properties:
@@ -6501,6 +7690,68 @@ components:
         - provider_id
         - date
         - status
+    ProviderEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        user_id:
+          type: number
+        user:
+          $ref: '#/components/schemas/BaseActorEntity'
+        phone_numbers:
+          type: array
+          items:
+            type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        categories:
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+        status:
+          type: string
+          enum:
+            - ONLINE
+            - OFFLINE
+            - EMERGENCY
+        type:
+          type: string
+          enum:
+            - DOCTOR
+            - NURSE
+            - CLINIC
+            - HOSPITAL
+        about:
+          type: string
+        booking_fees:
+          type: number
+        image_id:
+          type: number
+        image:
+          $ref: '#/components/schemas/MediaEntity'
+        description:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - user_id
+        - phone_numbers
+        - categories
+        - title
+        - status
+        - type
+        - created_at
+        - updated_at
     AppointmentEntity:
       type: object
       properties:
@@ -6508,8 +7759,12 @@ components:
           type: number
         provider_id:
           type: number
+        provider:
+          $ref: '#/components/schemas/ProviderEntity'
         user_id:
           type: number
+        user:
+          $ref: '#/components/schemas/BaseActorEntity'
         date:
           format: date-time
           type: string
@@ -6535,7 +7790,9 @@ components:
       required:
         - id
         - provider_id
+        - provider
         - user_id
+        - user
         - date
         - status
         - created_at
@@ -6568,15 +7825,140 @@ components:
             - CANCELLED_BY_CLIENT
         user_notes:
           type: string
+    UserNotificationEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        country_code:
+          type: string
+        gender:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+        picture:
+          $ref: '#/components/schemas/MediaEntity'
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - first_name
+        - last_name
+        - gender
+        - created_at
+        - updated_at
+    NotificationEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        type:
+          type: string
+          enum:
+            - CUSTOM
+            - APPOINTMENT_CREATED
+            - APPOINTMENT_UPDATED
+            - REQUEST_CREATED
+            - REQUEST_UPDATED
+        title:
+          type: string
+          nullable: true
+        body:
+          type: string
+          nullable: true
+        payload:
+          type: object
+          nullable: true
+        is_read:
+          type: boolean
+        is_seen:
+          type: boolean
+        sender:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/UserNotificationEntity'
+        receiver:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/UserNotificationEntity'
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - id
+        - type
+        - is_read
+        - is_seen
+        - created_at
+        - updated_at
+    NotificationsEntity:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationEntity'
+        meta:
+          $ref: '#/components/schemas/MetaDataEntity'
+      required:
+        - data
+        - meta
+    CreateCustomNotificationDto:
+      type: object
+      properties:
+        user_ids:
+          type: array
+          items:
+            type: number
+        roles:
+          type: array
+          items:
+            type: string
+            enum:
+              - USER
+              - PROVIDER
+              - ADMIN
+        type:
+          type: string
+          enum:
+            - CUSTOM
+            - APPOINTMENT_CREATED
+            - APPOINTMENT_UPDATED
+            - REQUEST_CREATED
+            - REQUEST_UPDATED
+        payload:
+          type: object
+        global:
+          type: boolean
+        title:
+          type: string
+        body:
+          type: string
+      required:
+        - type
     UserPhoneDto:
       type: object
       properties:
         phone_number:
           type: string
-          default: 573-513-9875
+          default: 804-907-8315
         country_code:
           type: string
-          default: '090'
+          default: '434'
       required:
         - phone_number
         - country_code
@@ -6588,7 +7970,7 @@ components:
           default: Yalla Ahmed
         birth_date:
           type: string
-          default: '2000-05-08T19:39:01Z'
+          default: '2000-06-02T20:44:30Z'
         phone_number:
           type: string
           default: '988888888'
@@ -6606,6 +7988,72 @@ components:
         - phone_number
         - country_code
         - gender
+    ProviderSignupDto:
+      type: object
+      properties:
+        full_name:
+          type: string
+          default: Dr. Ahmed Ali
+        birth_date:
+          type: string
+          default: '1980-06-02T20:44:30Z'
+        phone_number:
+          type: string
+          default: '988888888'
+        country_code:
+          type: string
+          default: '963'
+        gender:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+          default: MALE
+        title:
+          type: string
+          default: Dr. Ahmed Ali - Cardiologist
+        type:
+          type: string
+          enum:
+            - DOCTOR
+            - NURSE
+            - CLINIC
+            - HOSPITAL
+          default: DOCTOR
+        phone_numbers:
+          default:
+            - '988888888'
+            - '988888889'
+          type: array
+          items:
+            type: string
+        categories:
+          default:
+            - CARDIOLOGY
+          type: array
+          items:
+            type: string
+        about:
+          type: string
+        description:
+          type: string
+        booking_fees:
+          type: number
+        lat:
+          type: number
+        lng:
+          type: number
+        image_id:
+          type: number
+      required:
+        - full_name
+        - phone_number
+        - country_code
+        - gender
+        - title
+        - type
+        - phone_numbers
+        - categories
     VerifyOtpDto:
       type: object
       properties:
@@ -6617,7 +8065,7 @@ components:
           default: '+963'
         otp_code:
           type: string
-          default: '827468'
+          default: '316633'
         purpose:
           type: string
           enum:
@@ -6662,7 +8110,7 @@ components:
       properties:
         phone_number:
           type: string
-          default: (209) 802-1044 x425
+          default: (320) 338-8609
         country_code:
           type: string
           default: '963'
@@ -6732,6 +8180,8 @@ components:
           type: number
         user_id:
           type: number
+        user:
+          $ref: '#/components/schemas/BaseActorEntity'
         type:
           type: string
           enum:
@@ -6743,8 +8193,10 @@ components:
             - FAMILY_HISTORY
         title:
           type: string
-        image_id:
-          type: number
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaEntity'
         description:
           type: string
         created_at:
@@ -6756,8 +8208,10 @@ components:
       required:
         - id
         - user_id
+        - user
         - type
         - title
+        - images
         - created_at
         - updated_at
     HistoriesEntity:
@@ -6786,8 +8240,10 @@ components:
             - FAMILY_HISTORY
         title:
           type: string
-        image_id:
-          type: number
+        image_ids:
+          type: array
+          items:
+            type: number
         description:
           type: string
       required:
@@ -6807,10 +8263,38 @@ components:
             - FAMILY_HISTORY
         title:
           type: string
-        image_id:
-          type: number
+        image_ids:
+          type: array
+          items:
+            type: number
         description:
           type: string
+    CreateHistoryForUserDto:
+      type: object
+      properties:
+        user_id:
+          type: number
+        type:
+          type: string
+          enum:
+            - MEDICAL_RECORD
+            - PREGNANCY_HISTORY
+            - SURGERY_HISTORY
+            - ALLERGY_HISTORY
+            - MEDICATION_HISTORY
+            - FAMILY_HISTORY
+        title:
+          type: string
+        image_ids:
+          type: array
+          items:
+            type: number
+        description:
+          type: string
+      required:
+        - user_id
+        - type
+        - title
     CreateMedicineDto:
       type: object
       properties:
@@ -6848,6 +8332,8 @@ components:
           type: number
         user_id:
           type: number
+        user:
+          $ref: '#/components/schemas/BaseActorEntity'
         title:
           type: string
         week_day:
@@ -6879,6 +8365,7 @@ components:
       required:
         - id
         - user_id
+        - user
         - title
         - week_day
         - quantity
@@ -6941,6 +8428,8 @@ components:
           type: string
         image_id:
           type: number
+        image:
+          $ref: '#/components/schemas/MediaEntity'
         created_at:
           format: date-time
           type: string
@@ -7007,6 +8496,8 @@ components:
           type: number
         user_id:
           type: number
+        user:
+          $ref: '#/components/schemas/BaseActorEntity'
         status:
           type: string
           enum:
@@ -7025,6 +8516,7 @@ components:
       required:
         - id
         - user_id
+        - user
         - status
         - start
         - created_at
@@ -7083,6 +8575,8 @@ components:
           type: object
         image_id:
           type: number
+        image:
+          $ref: '#/components/schemas/MediaEntity'
         created_at:
           format: date-time
           type: string
@@ -7136,59 +8630,6 @@ components:
           type: object
         image_id:
           type: number
-    ProviderEntity:
-      type: object
-      properties:
-        id:
-          type: number
-        user_id:
-          type: number
-        phone_numbers:
-          type: array
-          items:
-            type: string
-        lat:
-          type: number
-        lng:
-          type: number
-        categories:
-          type: array
-          items:
-            type: string
-        title:
-          type: string
-        type:
-          type: string
-          enum:
-            - DOCTOR
-            - NURSE
-            - CLINIC
-            - HOSPITAL
-        about:
-          type: string
-        booking_fees:
-          type: number
-        image_id:
-          type: number
-        description:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      required:
-        - id
-        - user_id
-        - phone_numbers
-        - lat
-        - lng
-        - categories
-        - title
-        - type
-        - created_at
-        - updated_at
     ProvidersEntity:
       type: object
       properties:
@@ -7287,6 +8728,12 @@ components:
             type: string
         title:
           type: string
+        status:
+          type: string
+          enum:
+            - ONLINE
+            - OFFLINE
+            - EMERGENCY
         type:
           type: string
           enum:
@@ -7322,6 +8769,12 @@ components:
             type: string
         title:
           type: string
+        status:
+          type: string
+          enum:
+            - ONLINE
+            - OFFLINE
+            - EMERGENCY
         type:
           type: string
           enum:
@@ -7365,6 +8818,8 @@ components:
           type: number
         provider_id:
           type: number
+        provider:
+          $ref: '#/components/schemas/ProviderEntity'
         work_day:
           type: string
           enum:
@@ -7390,6 +8845,7 @@ components:
       required:
         - id
         - provider_id
+        - provider
         - work_day
         - from
         - to
@@ -7431,11 +8887,19 @@ components:
           type: number
         provider_id:
           type: number
+        provider:
+          $ref: '#/components/schemas/ProviderEntity'
         user_id:
           type: number
+        user:
+          $ref: '#/components/schemas/BaseActorEntity'
         category_id:
           type: number
+        category:
+          $ref: '#/components/schemas/CategoryEntity'
         title:
+          type: string
+        notes:
           type: string
         status:
           type: string
@@ -7452,7 +8916,9 @@ components:
       required:
         - id
         - provider_id
+        - provider
         - user_id
+        - user
         - title
         - status
         - created_at
@@ -7478,6 +8944,8 @@ components:
             - PENDING
             - DONE
             - CANCELED
+        history:
+          $ref: '#/components/schemas/CreateHistoryDto'
       required:
         - status
     ProviderCreateRequestDto:
@@ -7488,6 +8956,8 @@ components:
         category_id:
           type: number
         title:
+          type: string
+        notes:
           type: string
         status:
           type: string
@@ -7504,6 +8974,8 @@ components:
       properties:
         title:
           type: string
+        notes:
+          type: string
         status:
           type: string
           enum:
@@ -7512,3 +8984,5 @@ components:
             - CANCELED
         category_id:
           type: number
+        history:
+          $ref: '#/components/schemas/CreateHistoryDto'
