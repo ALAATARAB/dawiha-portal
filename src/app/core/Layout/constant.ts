@@ -54,8 +54,15 @@ export const layoutTheme = createTheme({
         MuiChip: {
             styleOverrides: {
                 colorSuccess: {
-                    backgroundColor: '#10B981',
-                    color: '#FFFFFF',
+                    '&.MuiChip-filled': {
+                        backgroundColor: '#10B981',
+                        color: '#FFFFFF',
+                    },
+                    '&.MuiChip-outlined': {
+                        backgroundColor: 'transparent',
+                        color: '#10B981',
+                        borderColor: '#10B981',
+                    },
                 },
             },
         },

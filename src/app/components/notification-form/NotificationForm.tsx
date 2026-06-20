@@ -1,7 +1,6 @@
 import CampaignIcon from '@mui/icons-material/Campaign'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import GroupsIcon from '@mui/icons-material/Groups'
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'
 import SendIcon from '@mui/icons-material/Send'
 import {
@@ -18,6 +17,8 @@ import {
     Stack,
     Switch,
     TextField,
+    ToggleButton,
+    ToggleButtonGroup,
     Typography,
     alpha,
 } from '@mui/material'
@@ -47,25 +48,6 @@ const USER_ROLES: UserRole[] = ['USER', 'PROVIDER', 'ADMIN']
 const PROVIDER_TYPES: ProviderType[] = ['DOCTOR', 'NURSE', 'CLINIC', 'HOSPITAL']
 
 const PREGNANCY_STATUSES: PregnancyStatus[] = ['ACTIVE', 'CANCELED', 'DONE']
-
-const ROLE_COLORS: Record<
-    UserRole,
-    'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'
-> = {
-    USER: 'primary',
-    PROVIDER: 'secondary',
-    ADMIN: 'warning',
-}
-
-const PROVIDER_TYPE_COLORS: Record<
-    ProviderType,
-    'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'
-> = {
-    DOCTOR: 'primary',
-    NURSE: 'info',
-    CLINIC: 'secondary',
-    HOSPITAL: 'success',
-}
 
 interface NotificationFormProps {
     onSuccess?: () => void
@@ -208,20 +190,6 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
         fromAge,
         toAge,
     ])
-
-    const toggleRole = (role: UserRole) => {
-        setSelectedRoles((prev) =>
-            prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
-        )
-    }
-
-    const toggleProviderType = (providerType: ProviderType) => {
-        setSelectedProviderTypes((prev) =>
-            prev.includes(providerType)
-                ? prev.filter((t) => t !== providerType)
-                : [...prev, providerType]
-        )
-    }
 
     const onSubmit = async (data: NotificationFormValues) => {
         try {
@@ -444,32 +412,45 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
                                             >
                                                 Roles
                                             </Typography>
-                                            <Stack
-                                                direction="row"
-                                                flexWrap="wrap"
-                                                gap={1}
+                                            <ToggleButtonGroup
+                                                value={selectedRoles}
+                                                onChange={(_, value) =>
+                                                    setSelectedRoles(value ?? [])
+                                                }
+                                                aria-label="roles"
+                                                size="small"
+                                                sx={{
+                                                    flexWrap: 'wrap',
+                                                    gap: 1,
+                                                    '& .MuiToggleButtonGroup-grouped': {
+                                                        borderRadius: '8px !important',
+                                                        border: '1px solid',
+                                                        borderColor: 'divider',
+                                                        mx: 0,
+                                                    },
+                                                }}
                                             >
-                                                {USER_ROLES.map((role) => {
-                                                    const selected =
-                                                        selectedRoles.includes(role)
-                                                    return (
-                                                        <Chip
-                                                            key={role}
-                                                            label={role}
-                                                            clickable
-                                                            color={ROLE_COLORS[role]}
-                                                            variant={
-                                                                selected
-                                                                    ? 'filled'
-                                                                    : 'outlined'
-                                                            }
-                                                            onClick={() =>
-                                                                toggleRole(role)
-                                                            }
-                                                        />
-                                                    )
-                                                })}
-                                            </Stack>
+                                                {USER_ROLES.map((role) => (
+                                                    <ToggleButton
+                                                        key={role}
+                                                        value={role}
+                                                        sx={{
+                                                            textTransform: 'none',
+                                                            fontWeight: 600,
+                                                            px: 2,
+                                                            '&.Mui-selected': {
+                                                                bgcolor: 'primary.main',
+                                                                color: 'primary.contrastText',
+                                                                '&:hover': {
+                                                                    bgcolor: 'primary.dark',
+                                                                },
+                                                            },
+                                                        }}
+                                                    >
+                                                        {role}
+                                                    </ToggleButton>
+                                                ))}
+                                            </ToggleButtonGroup>
                                         </Box>
 
                                         <Box>
@@ -480,43 +461,53 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
                                             >
                                                 Provider types
                                             </Typography>
-                                            <Stack
-                                                direction="row"
-                                                flexWrap="wrap"
-                                                gap={1}
+                                            <ToggleButtonGroup
+                                                value={selectedProviderTypes}
+                                                onChange={(_, value) =>
+                                                    setSelectedProviderTypes(value ?? [])
+                                                }
+                                                aria-label="provider types"
+                                                size="small"
+                                                sx={{
+                                                    flexWrap: 'wrap',
+                                                    gap: 1,
+                                                    '& .MuiToggleButtonGroup-grouped': {
+                                                        borderRadius: '8px !important',
+                                                        border: '1px solid',
+                                                        borderColor: 'divider',
+                                                        mx: 0,
+                                                    },
+                                                }}
                                             >
-                                                {PROVIDER_TYPES.map((providerType) => {
-                                                    const selected =
-                                                        selectedProviderTypes.includes(
-                                                            providerType
-                                                        )
-                                                    return (
-                                                        <Chip
-                                                            key={providerType}
-                                                            label={providerType}
-                                                            clickable
-                                                            icon={
-                                                                <LocalHospitalIcon />
-                                                            }
-                                                            color={
-                                                                PROVIDER_TYPE_COLORS[
-                                                                    providerType
-                                                                ]
-                                                            }
-                                                            variant={
-                                                                selected
-                                                                    ? 'filled'
-                                                                    : 'outlined'
-                                                            }
-                                                            onClick={() =>
-                                                                toggleProviderType(
-                                                                    providerType
-                                                                )
-                                                            }
-                                                        />
-                                                    )
-                                                })}
-                                            </Stack>
+                                                {PROVIDER_TYPES.map((providerType) => (
+                                                    <ToggleButton
+                                                        key={providerType}
+                                                        value={providerType}
+                                                        sx={{
+                                                            textTransform: 'none',
+                                                            fontWeight: 600,
+                                                            px: 2,
+                                                            '&.Mui-selected': {
+                                                                bgcolor: 'secondary.main',
+                                                                color: 'secondary.contrastText',
+                                                                '&:hover': {
+                                                                    bgcolor: 'secondary.dark',
+                                                                },
+                                                            },
+                                                        }}
+                                                    >
+                                                        {providerType}
+                                                    </ToggleButton>
+                                                ))}
+                                            </ToggleButtonGroup>
+                                            <Typography
+                                                variant="caption"
+                                                color="text.secondary"
+                                                display="block"
+                                                sx={{ mt: 1 }}
+                                            >
+                                                Click again to turn a type off.
+                                            </Typography>
                                         </Box>
                                     </>
                                 ) : null}
