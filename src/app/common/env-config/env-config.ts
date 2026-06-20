@@ -12,7 +12,7 @@ export const envConfig: IEnvConfig = {
     PROJECT_NAME: import.meta.env.VITE_APP_NAME || 'Dawiha Admin',
     API_BASE_URL:
         import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ||
-        'https://dawiha-server.vercel.app',
+        'http://77.37.86.178:8888/',
 }
 
 export function getApiV1Url(path: string): string {
