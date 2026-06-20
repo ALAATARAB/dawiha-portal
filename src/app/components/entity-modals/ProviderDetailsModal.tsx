@@ -67,6 +67,16 @@ export const ProviderDetailsModal = ({ providerId, open, onClose }: ProviderDeta
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <Typography variant="caption" color="text.secondary">
+                                Average Rating
+                            </Typography>
+                            <Typography variant="body1">
+                                {typeof provider.avg === 'number'
+                                    ? `${provider.avg.toFixed(2)} (${provider.rating_count ?? 0} ratings)`
+                                    : '-'}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Typography variant="caption" color="text.secondary">
                                 Booking Fees
                             </Typography>
                             <Typography variant="body1">

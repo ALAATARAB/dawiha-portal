@@ -109,6 +109,12 @@ export const API_ENDPOINTS = {
         MARK_READ: (id: number | string) => `/admin/notifications/read/${id}`,
         DELETE: (id: number | string) => `/admin/notifications/${id}`,
     },
+    PROVIDER_RATING: {
+        GET_LIST: '/admin/provider-ratings',
+        GET_ONE: (id: number | string) => `/admin/provider-ratings/${id}`,
+        UPDATE: (id: number | string) => `/admin/provider-ratings/${id}`,
+        DELETE: (id: number | string) => `/admin/provider-ratings/${id}`,
+    },
 }
 
 export const API_METHODS = {

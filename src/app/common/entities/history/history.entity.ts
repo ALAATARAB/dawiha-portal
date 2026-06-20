@@ -15,6 +15,7 @@ export interface HistoryEntity {
     user_id: number
     type: HistoryType
     title: string
+    consistent: boolean
     image_id?: number
     description?: string
     created_at: string

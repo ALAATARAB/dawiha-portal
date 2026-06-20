@@ -9,6 +9,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import PeopleIcon from '@mui/icons-material/People'
 import PregnantWomanIcon from '@mui/icons-material/PregnantWoman'
 import ScheduleIcon from '@mui/icons-material/Schedule'
+import StarIcon from '@mui/icons-material/Star'
 import TimelineIcon from '@mui/icons-material/Timeline'
 import { type Navigation } from '@toolpad/core/AppProvider'
 
@@ -23,6 +24,11 @@ export const adminSidebar: Navigation = [
         segment: 'providers',
         title: 'Providers',
         icon: <LocalHospitalIcon />,
+    },
+    {
+        segment: 'provider-ratings',
+        title: 'Provider Ratings',
+        icon: <StarIcon />,
     },
     {
         segment: 'appointments',

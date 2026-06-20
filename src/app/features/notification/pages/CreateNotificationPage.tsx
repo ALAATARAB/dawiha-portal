@@ -13,7 +13,13 @@ import {
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCreateCustomNotificationMutation } from '../api/notificationApiSlice'
-import type { CreateCustomNotificationDto, NotificationType, UserRole } from '../../../common/dtos/notification/create-custom-notification.dto'
+import type {
+    CreateCustomNotificationDto,
+    NotificationType,
+    PregnancyStatus,
+    UserRole,
+} from '../../../common/dtos/notification/create-custom-notification.dto'
+import type { ProviderType } from '../../../common/entities/provider/provider.entity'
 
 const notificationTypes: NotificationType[] = [
     'CUSTOM',
@@ -24,6 +30,8 @@ const notificationTypes: NotificationType[] = [
 ]
 
 const userRoles: UserRole[] = ['USER', 'PROVIDER', 'ADMIN']
+const providerTypes: ProviderType[] = ['DOCTOR', 'NURSE', 'CLINIC', 'HOSPITAL']
+const pregnancyStatuses: PregnancyStatus[] = ['ACTIVE', 'CANCELED', 'DONE']
 
 export const CreateNotificationPage = () => {
     const navigate = useNavigate()
@@ -78,6 +86,18 @@ export const CreateNotificationPage = () => {
         }
     }
 
+    const handleToggleProviderType = (providerType: ProviderType) => {
+        const currentTypes = formData.provider_type || []
+        if (currentTypes.includes(providerType)) {
+            handleChange(
+                'provider_type',
+                currentTypes.filter((type) => type !== providerType)
+            )
+        } else {
+            handleChange('provider_type', [...currentTypes, providerType])
+        }
+    }
+
     const handleSubmit = async () => {
         try {
             const submitData: CreateCustomNotificationDto = {
@@ -93,6 +113,14 @@ export const CreateNotificationPage = () => {
             if (formData.roles && formData.roles.length > 0) {
                 submitData.roles = formData.roles
             }
+            if (formData.provider_type && formData.provider_type.length > 0) {
+                submitData.provider_type = formData.provider_type
+            }
+            if (formData.pregnancy_status) {
+                submitData.pregnancy_status = formData.pregnancy_status
+            }
+            if (formData.from_age) submitData.from_age = formData.from_age
+            if (formData.to_age) submitData.to_age = formData.to_age
             if (formData.payload) submitData.payload = formData.payload
 
             await createNotification(submitData).unwrap()
@@ -216,8 +244,80 @@ export const CreateNotificationPage = () => {
                                     ))}
                                 </Box>
                             </Box>
+
+                            <Box>
+                                <Typography variant="subtitle2" gutterBottom>
+                                    Target Provider Types
+                                </Typography>
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                                    {providerTypes.map((providerType) => (
+                                        <Chip
+                                            key={providerType}
+                                            label={providerType}
+                                            onClick={() => handleToggleProviderType(providerType)}
+                                            color={
+                                                formData.provider_type?.includes(providerType)
+                                                    ? 'primary'
+                                                    : 'default'
+                                            }
+                                            variant={
+                                                formData.provider_type?.includes(providerType)
+                                                    ? 'filled'
+                                                    : 'outlined'
+                                            }
+                                        />
+                                    ))}
+                                </Box>
+                            </Box>
                         </>
                     )}
+
+                    <TextField
+                        select
+                        label="Pregnancy Status Filter"
+                        value={formData.pregnancy_status || ''}
+                        onChange={(e) =>
+                            handleChange(
+                                'pregnancy_status',
+                                (e.target.value || undefined) as PregnancyStatus | undefined
+                            )
+                        }
+                        fullWidth
+                    >
+                        <MenuItem value="">Any</MenuItem>
+                        {pregnancyStatuses.map((status) => (
+                            <MenuItem key={status} value={status}>
+                                {status}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+
+                    <Box sx={{ display: 'flex', gap: 2 }}>
+                        <TextField
+                            label="From Age"
+                            type="number"
+                            value={formData.from_age ?? ''}
+                            onChange={(e) =>
+                                handleChange(
+                                    'from_age',
+                                    e.target.value ? Number(e.target.value) : undefined
+                                )
+                            }
+                            fullWidth
+                        />
+                        <TextField
+                            label="To Age"
+                            type="number"
+                            value={formData.to_age ?? ''}
+                            onChange={(e) =>
+                                handleChange(
+                                    'to_age',
+                                    e.target.value ? Number(e.target.value) : undefined
+                                )
+                            }
+                            fullWidth
+                        />
+                    </Box>
 
                     <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 2 }}>
                         <Button

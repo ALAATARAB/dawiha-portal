@@ -117,6 +117,19 @@ export const ProviderListPage = () => {
             valueFormatter: (value) => value ? `$${value}` : '-',
         },
         {
+            field: 'avg',
+            headerName: 'Avg Rating',
+            width: 110,
+            valueFormatter: (value) =>
+                typeof value === 'number' ? value.toFixed(2) : '0.00',
+        },
+        {
+            field: 'rating_count',
+            headerName: 'Ratings',
+            width: 100,
+            valueFormatter: (value) => value ?? 0,
+        },
+        {
             field: 'created_at',
             headerName: 'Created At',
             width: 180,

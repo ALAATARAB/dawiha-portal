@@ -17,6 +17,9 @@ export interface ProviderEntity {
     booking_fees?: number
     image_id?: number
     description?: string
+    rating_sum: number
+    rating_count: number
+    avg: number
     created_at: string
     updated_at: string
 }

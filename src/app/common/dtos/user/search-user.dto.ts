@@ -1,3 +1,5 @@
+export type PregnancyStatus = 'ACTIVE' | 'CANCELED' | 'DONE'
+
 export interface SearchUserDto {
     page?: number
     perPage?: number
@@ -8,4 +10,7 @@ export interface SearchUserDto {
     country_code?: string
     created_at_from?: string
     created_at_to?: string
+    pregnancy_status?: PregnancyStatus
+    from_age?: number
+    to_age?: number
 }

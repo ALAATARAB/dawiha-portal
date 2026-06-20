@@ -4,8 +4,10 @@ import { useForm } from 'react-hook-form';
 import {
   type CreateCustomNotificationDto,
   type NotificationType,
+  type PregnancyStatus,
   type UserRole,
 } from '../../common/dtos/notification/create-custom-notification.dto';
+import type { ProviderType } from '../../common/entities/provider/provider.entity';
 import { useCreateCustomNotificationMutation } from '../../features/notification/api/notificationApiSlice';
 import { useGetUsersQuery } from '../../features/user/api/userApiSlice';
 import './style.css';
@@ -19,6 +21,10 @@ const NOTIFICATION_TYPES: NotificationType[] = [
 ];
 
 const USER_ROLES: UserRole[] = ['USER', 'PROVIDER', 'ADMIN'];
+
+const PROVIDER_TYPES: ProviderType[] = ['DOCTOR', 'NURSE', 'CLINIC', 'HOSPITAL'];
+
+const PREGNANCY_STATUSES: PregnancyStatus[] = ['ACTIVE', 'CANCELED', 'DONE'];
 
 interface NotificationFormProps {
   onSuccess?: () => void;
@@ -43,6 +49,10 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
   const [recipientError, setRecipientError] = useState('');
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<UserRole[]>([]);
+  const [selectedProviderTypes, setSelectedProviderTypes] = useState<ProviderType[]>([]);
+  const [pregnancyStatus, setPregnancyStatus] = useState<PregnancyStatus | ''>('');
+  const [fromAge, setFromAge] = useState('');
+  const [toAge, setToAge] = useState('');
   const [useGlobal, setUseGlobal] = useState(false);
 
   // Use RTK Query for proper authentication
@@ -91,8 +101,31 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
       setPayloadError('');
       setRecipientError('');
 
-      if (!useGlobal && selectedUsers.length === 0 && selectedRoles.length === 0) {
-        throw new Error('Select at least one user or one role, or enable "Send to All Users".');
+      if (
+        !useGlobal &&
+        selectedUsers.length === 0 &&
+        selectedRoles.length === 0 &&
+        selectedProviderTypes.length === 0 &&
+        !pregnancyStatus &&
+        !fromAge.trim() &&
+        !toAge.trim()
+      ) {
+        throw new Error(
+          'Select at least one recipient target (users, roles, provider types, pregnancy status, or age range), or enable "Send to All Users".'
+        );
+      }
+
+      const parsedFromAge = fromAge.trim() ? Number(fromAge) : undefined;
+      const parsedToAge = toAge.trim() ? Number(toAge) : undefined;
+
+      if (parsedFromAge !== undefined && (!Number.isFinite(parsedFromAge) || parsedFromAge <= 0)) {
+        setRecipientError('From age must be a positive number.');
+        return;
+      }
+
+      if (parsedToAge !== undefined && (!Number.isFinite(parsedToAge) || parsedToAge <= 0)) {
+        setRecipientError('To age must be a positive number.');
+        return;
       }
 
       let parsedPayload: Record<string, unknown> | undefined;
@@ -118,6 +151,10 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
         global: useGlobal,
         user_ids: useGlobal ? undefined : selectedUsers.length > 0 ? selectedUsers : undefined,
         roles: selectedRoles.length > 0 ? selectedRoles : undefined,
+        provider_type: selectedProviderTypes.length > 0 ? selectedProviderTypes : undefined,
+        pregnancy_status: pregnancyStatus || undefined,
+        from_age: parsedFromAge,
+        to_age: parsedToAge,
       };
 
       // Use RTK Query mutation which includes proper authentication
@@ -126,6 +163,10 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
       setPayloadText('{}');
       setSelectedUsers([]);
       setSelectedRoles([]);
+      setSelectedProviderTypes([]);
+      setPregnancyStatus('');
+      setFromAge('');
+      setToAge('');
       setUseGlobal(false);
       setRecipientError('');
       setPayloadError('');
@@ -145,7 +186,9 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
         <div className="form-section-header">
           <h3>Recipients</h3>
           <span className="section-badge">
-            {useGlobal ? 'All Users' : `${selectedUsers.length} Users • ${selectedRoles.length} Roles`}
+            {useGlobal
+              ? 'All Users'
+              : `${selectedUsers.length} Users • ${selectedRoles.length} Roles • ${selectedProviderTypes.length} Provider Types`}
           </span>
         </div>
 
@@ -221,8 +264,77 @@ export default function NotificationForm({ onSuccess, onError }: NotificationFor
                 ))}
               </div>
             </div>
+
+            <div className="form-group">
+              <label>Select Provider Types</label>
+              <div className="roles-container">
+                {PROVIDER_TYPES.map((providerType) => (
+                  <label key={providerType} className="role-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={selectedProviderTypes.includes(providerType)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedProviderTypes([...selectedProviderTypes, providerType]);
+                        } else {
+                          setSelectedProviderTypes(
+                            selectedProviderTypes.filter((type) => type !== providerType)
+                          );
+                        }
+                      }}
+                    />
+                    {providerType}
+                  </label>
+                ))}
+              </div>
+            </div>
           </>
         )}
+
+        <div className="form-group">
+          <label htmlFor="pregnancyStatus">Pregnancy Status Filter</label>
+          <select
+            id="pregnancyStatus"
+            className="form-control"
+            value={pregnancyStatus}
+            onChange={(e) => setPregnancyStatus(e.target.value as PregnancyStatus | '')}
+          >
+            <option value="">Any</option>
+            {PREGNANCY_STATUSES.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+          <span className="helper-text">
+            Optional filter applied on top of the selected recipients.
+          </span>
+        </div>
+
+        <div className="form-group">
+          <label>Age Range Filter</label>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <input
+              type="number"
+              min={1}
+              className="form-control"
+              placeholder="From age"
+              value={fromAge}
+              onChange={(e) => setFromAge(e.target.value)}
+            />
+            <input
+              type="number"
+              min={1}
+              className="form-control"
+              placeholder="To age"
+              value={toAge}
+              onChange={(e) => setToAge(e.target.value)}
+            />
+          </div>
+          <span className="helper-text">
+            Optional minimum and maximum user age filters.
+          </span>
+        </div>
       </div>
 
       <div className="form-section">

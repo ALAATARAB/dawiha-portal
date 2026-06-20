@@ -12,6 +12,7 @@ import PregnancyListPage from '../../../features/pregnancy/pages/PregnancyListPa
 import PregnancyStageListPage from '../../../features/pregnancy-stage/pages/PregnancyStageListPage'
 import ProviderListPage from '../../../features/provider/pages/ProviderListPage'
 import ProviderAvailabilityListPage from '../../../features/provider-availability/pages/ProviderAvailabilityListPage'
+import ProviderRatingListPage from '../../../features/provider-rating/pages/ProviderRatingListPage'
 import Categories from '../../../pages/categories/Categories'
 import CreateNotificationPage from '../../../pages/notifications/CreateNotificationPage'
 import Notifications from '../../../pages/notifications/Notifications'
@@ -28,6 +29,7 @@ import '../../../features/medicine-guide/api/medicineGuideApiSlice'
 import '../../../features/pregnancy/api/pregnancyApiSlice'
 import '../../../features/pregnancy-stage/api/pregnancyStageApiSlice'
 import '../../../features/provider-availability/api/providerAvailabilityApiSlice'
+import '../../../features/provider-rating/api/providerRatingApiSlice'
 import '../../../features/category/api/categoryApiSlice'
 
 export const adminRoutes: RouteObject[] = [
@@ -37,6 +39,9 @@ export const adminRoutes: RouteObject[] = [
 
     // Providers Management
     { path: '/providers', element: <ProviderListPage /> },
+
+    // Provider Ratings Management
+    { path: '/provider-ratings', element: <ProviderRatingListPage /> },
 
     // Appointments Management
     { path: '/appointments', element: <AppointmentListPage /> },

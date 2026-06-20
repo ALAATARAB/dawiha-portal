@@ -20,5 +20,6 @@ export const API_SLICES_TAGS = {
     DASHBOARD: 'dashboard', // Placeholder for future implementation
     ADS: 'ads',
     NOTIFICATION: 'notification',
+    PROVIDER_RATING: 'providerRating',
 }
 export const API_TAGS = Object.values(API_SLICES_TAGS)
