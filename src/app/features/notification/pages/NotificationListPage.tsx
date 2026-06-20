@@ -129,8 +129,8 @@ export const NotificationListPage = () => {
         navigate('/notifications/create')
     }
 
-    const handleEdit = (id: Tid) => {
-        navigate(`/notifications/edit/${id}`)
+    const handleEditNavigate = (row: NotificationEntity) => {
+        navigate(`/notifications/${row.id}/edit`)
     }
 
     const handleDelete = async (id: Tid) => {
@@ -150,7 +150,7 @@ export const NotificationListPage = () => {
                     enableEdit
                     enableDelete
                     onCreateNavigate={handleCreate}
-                    onEdit={handleEdit}
+                    onEditNavigate={handleEditNavigate}
                     onDelete={handleDelete}
                     pagination={{
                         page,

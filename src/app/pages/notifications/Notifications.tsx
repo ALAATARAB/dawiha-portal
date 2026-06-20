@@ -1,12 +1,16 @@
 import { useNotifications } from '@toolpad/core/useNotifications'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { type NotificationType } from '../../common/dtos/notification/create-custom-notification.dto'
 import CrudTemplate from '../../components/crud-template/CrudTemplate'
+import { UserDetailsModal } from '../../components/entity-modals/UserDetailsModal'
 import { SimpleSearch } from '../../components/simple-search/SimpleSearch'
-import { useGetNotificationsQuery } from '../../features/notification/api/notificationApiSlice'
-import { NOTIFICATIONS_PAGE_TITLE, notificationColumns } from './constant'
+import {
+    useDeleteNotificationMutation,
+    useGetNotificationsQuery,
+} from '../../features/notification/api/notificationApiSlice'
+import { getNotificationColumns, NOTIFICATIONS_PAGE_TITLE } from './constant'
 import { type NotificationListItem } from './types'
 
 const FALLBACK_TITLE: Record<NotificationType, string> = {
@@ -17,26 +21,19 @@ const FALLBACK_TITLE: Record<NotificationType, string> = {
     REQUEST_UPDATED: 'Request updated notification',
 }
 
-const toObject = (value: unknown): Record<string, unknown> =>
-    value && typeof value === 'object' && !Array.isArray(value)
-        ? (value as Record<string, unknown>)
-        : {}
-
-const toText = (value: unknown): string =>
-    typeof value === 'string' ? value : ''
-
 export default function Notifications() {
     const navigate = useNavigate()
     const toast = useNotifications()
     const [searchParams] = useSearchParams()
+    const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
+    const [userModalOpen, setUserModalOpen] = useState(false)
 
-    // Query with proper defaults matching server expectations
     const { data, isLoading, error } = useGetNotificationsQuery({
         page: 1,
         perPage: 100,
     })
+    const [deleteNotification] = useDeleteNotificationMutation()
 
-    // Show error toast if there's an error (must be in useEffect to avoid render issues)
     useEffect(() => {
         if (error) {
             console.error('Notifications error:', error)
@@ -57,24 +54,17 @@ export default function Notifications() {
         if (!data?.data) return []
 
         return data.data.map((row): NotificationListItem => {
-            const payload = toObject(row.payload)
-            const title = toText(payload.title) || FALLBACK_TITLE[row.type]
-            const message =
-                toText(payload.body) ||
-                (Object.keys(payload).length > 0
-                    ? JSON.stringify(payload)
-                    : '—')
-            const firstName = toText(row.receiver?.first_name)
-            const lastName = toText(row.receiver?.last_name)
+            const receiverId = row.receiver?.id ?? null
             const receiverName =
-                `${firstName} ${lastName}`.trim() ||
-                (row.receiver?.id ? `User #${row.receiver.id}` : 'Global')
+                row.receiver?.full_name ||
+                (receiverId ? `User #${receiverId}` : '—')
 
             return {
                 id: row.id,
                 type: row.type,
-                title,
-                message,
+                title: row.title || FALLBACK_TITLE[row.type],
+                message: row.body || '—',
+                receiverId,
                 receiverName,
                 isRead: row.is_read,
                 isSeen: row.is_seen,
@@ -93,19 +83,66 @@ export default function Notifications() {
         )
     }, [rows, searchParams])
 
+    const columns = useMemo(
+        () =>
+            getNotificationColumns({
+                onReceiverClick: (receiverId) => {
+                    setSelectedUserId(receiverId)
+                    setUserModalOpen(true)
+                },
+            }),
+        []
+    )
+
+    const handleDelete = async (id: number) => {
+        try {
+            await deleteNotification(id).unwrap()
+            toast.show('Notification deleted successfully.', {
+                severity: 'success',
+                autoHideDuration: 2500,
+            })
+        } catch (deleteError: any) {
+            toast.show(
+                deleteError?.data?.message ||
+                    deleteError?.message ||
+                    'Failed to delete notification.',
+                {
+                    severity: 'error',
+                    autoHideDuration: 3000,
+                }
+            )
+        }
+    }
+
     return (
-        <CrudTemplate<NotificationListItem>
-            columns={notificationColumns}
-            data={filteredRows}
-            totalCount={filteredRows.length}
-            isLoading={isLoading}
-            enableCreate
-            enableView
-            pageSizeOptions={[10, 25, 50, 100]}
-            onCreateNavigate={() => navigate('/notifications/create')}
-            onViewNavigate={(row) => navigate(`/notifications/${row.id}`)}
-            extraFilters={<SimpleSearch searchParamKeyName="title" />}
-            title={NOTIFICATIONS_PAGE_TITLE}
-        />
+        <>
+            <CrudTemplate<NotificationListItem>
+                columns={columns}
+                data={filteredRows}
+                totalCount={filteredRows.length}
+                isLoading={isLoading}
+                enableCreate
+                enableView
+                enableEdit
+                enableDelete
+                pageSizeOptions={[10, 25, 50, 100]}
+                onCreateNavigate={() => navigate('/notifications/create')}
+                onViewNavigate={(row) => navigate(`/notifications/${row.id}`)}
+                onEditNavigate={(row) =>
+                    navigate(`/notifications/${row.id}/edit`)
+                }
+                onDelete={handleDelete}
+                extraFilters={<SimpleSearch searchParamKeyName="title" />}
+                title={NOTIFICATIONS_PAGE_TITLE}
+            />
+            <UserDetailsModal
+                userId={selectedUserId}
+                open={userModalOpen}
+                onClose={() => {
+                    setUserModalOpen(false)
+                    setSelectedUserId(null)
+                }}
+            />
+        </>
     )
 }

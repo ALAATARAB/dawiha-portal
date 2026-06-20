@@ -5,6 +5,7 @@ export type NotificationListItem = {
     type: NotificationType
     title: string
     message: string
+    receiverId: number | null
     receiverName: string
     isRead: boolean
     isSeen: boolean
