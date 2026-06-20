@@ -3,18 +3,22 @@ import { useParams } from 'react-router-dom'
 
 import UserDetailsDisplay from './components/UserDetailsDisplay'
 import UserDetailsTablesTab from './components/UserDetailsTablesTab'
+import UserProviderSection from './components/UserProviderSection'
+import UserStatsRow from './components/UserStatsRow'
 import { useGetOneUserQuery } from '../../../features/user/api/userApiSlice'
 import LoadingPage from '../../system/loading/LoadingPage'
 
 const ViewUserDetails = () => {
     const { id } = useParams()
-    const { data: userData, isFetching, isError } = useGetOneUserQuery(
-        Number(id),
-        { skip: !id || Number.isNaN(Number(id)) }
-    )
+    const userId = Number(id)
+    const { data: userData, isFetching, isError } = useGetOneUserQuery(userId, {
+        skip: !id || Number.isNaN(userId),
+    })
+
     if (isFetching) {
         return <LoadingPage />
     }
+
     if (isError || !userData) {
         return (
             <Box sx={{ py: 2 }}>
@@ -25,13 +29,16 @@ const ViewUserDetails = () => {
             </Box>
         )
     }
+
     return (
-        <>
+        <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
             <UserDetailsDisplay user={userData} />
-            <div style={{ paddingBottom: '5px' }}>
-                <UserDetailsTablesTab userId={Number(id)} />
-            </div>
-        </>
+            <UserStatsRow userId={userId} />
+            {userData.role === 'PROVIDER' && (
+                <UserProviderSection userId={userId} />
+            )}
+            <UserDetailsTablesTab userId={userId} />
+        </Box>
     )
 }
 
